@@ -57,13 +57,22 @@ public class UserAuthenticator {
 		}
 		
 		String index = normalizeUrlPath(path);
-		for (String filter : user.getFilters()) {
+		for (String filter : user.getIndexFilters()) {
 			if (ifFilterCoversIndex(index, filter)) {
 				return true;
 			}
 		}
 		
 		return false;
+	}
+
+	/**
+	 * load authentication info when ES instance starts
+	 * @param userPassIndices List < Map <key, val>> 
+	 */
+	public static void loadRootUserDataCacheOnStart() {
+		ESLoggerFactory.getRootLogger().error("loadRootUserDataCacheOnStart");
+		users.put("root", UserData.restoreFromESData("root", rootPassword, "/*"));
 	}
 	
 	/**

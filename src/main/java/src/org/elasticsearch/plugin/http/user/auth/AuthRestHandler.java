@@ -18,7 +18,7 @@ public class AuthRestHandler extends BaseRestHandler {
     public AuthRestHandler(Settings settings, RestController restController, Client client) {
     	super(settings, restController, client);
         restController.registerHandler(GET, "/_httpuserauth", this);
-        RestFilter filter = new AuthRestFilter(settings);
+        RestFilter filter = new AuthRestFilter(client);
         restController.registerFilter(filter);
     }
 
@@ -64,11 +64,10 @@ public class AuthRestHandler extends BaseRestHandler {
 		}
 		if (mode.equals("addindex")) {
 			String userName  = request.param("username");
-			String password  = request.param("password");
 			String indexName = request.param("index");
 
 	        try {
-		        boolean res = userDataBridge.addAuthIndex(userName, password, indexName);
+		        boolean res = userDataBridge.addAuthIndex(userName, indexName);
 		        if (res) {
 		        	channel.sendResponse(new BytesRestResponse(OK, "added auth index: " + userName));
 		        } else {
@@ -81,6 +80,26 @@ public class AuthRestHandler extends BaseRestHandler {
 	        }
 	        return;
 		}
+
+		if (mode.equals("updateindex")) {
+			String userName  = request.param("username");
+			String indexName = request.param("index");
+
+	        try {
+		        boolean res = userDataBridge.updateAuthIndex(userName, indexName);
+		        if (res) {
+		        	channel.sendResponse(new BytesRestResponse(OK, "added auth index: " + userName));
+		        } else {
+		        	channel.sendResponse(new BytesRestResponse(OK, "failed to add auth index: " + userName));
+		        }
+	        } catch (Exception ex) {
+				Loggers.getLogger(getClass()).error("failed to add auth index: ", ex);
+		        channel.sendResponse(new BytesRestResponse(OK, "failed to add auth index : " + userName));
+		        return ;
+	        }
+	        return;
+		}
+		
 		// TODO test following modes
 		if (mode.equals("passwd")) {
 			String userName = request.param("username");

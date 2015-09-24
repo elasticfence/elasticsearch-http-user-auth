@@ -33,7 +33,7 @@ public class HttpUserAuthPlugin extends AbstractPlugin {
         	String rootPassword = settings.get("http.user.auth.root.password");
         	if (rootPassword != null && !rootPassword.equals("")) {
         		UserAuthenticator.setRootPassword(rootPassword);
-        		UserAuthenticator.reloadUserDataCache(null);
+        		UserAuthenticator.loadRootUserDataCacheOnStart();
         	}
     		
             Collection<Class<? extends Module>> modules = Lists.newArrayList();

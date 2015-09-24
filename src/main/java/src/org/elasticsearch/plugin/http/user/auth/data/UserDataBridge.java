@@ -2,6 +2,7 @@ package org.elasticsearch.plugin.http.user.auth.data;
 
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -84,7 +85,7 @@ public class UserDataBridge {
 	 * @param path
 	 * @return
 	 */
-	public boolean addAuthIndex (String userName, String password, String indexName) {
+	public boolean addAuthIndex (String userName, String indexName) {
 		if (indexName != null && indexName.equals("/*")) {
 			// root only
 			return false;
@@ -93,21 +94,53 @@ public class UserDataBridge {
 		if (user == null) {
 			return false;
 		}
-		if (user.isValidPassword(password)) {
-			Set<String> indices = user.getFilters();
+		Set<String> indexFilters = user.getIndexFilters();
+		if (indexName != null && !indexName.equals("")) {
+			String[] indexNames = indexName.split(",");
+			for (String index : indexNames) {
+				if (index.equals("")) {
+					continue;
+				}
+				if (index.charAt(0) != '/') {
+					index = "/" + index;
+				}
+				indexFilters.add(index);
+			}
+			user.setFilters(indexFilters);
+		}
+		return putUser(user);
+	}
+	
+	/**
+	 * add permission to an user with a specified index
+	 * @param user
+	 * @param password
+	 * @param path
+	 * @return
+	 */
+	public boolean updateAuthIndex (String userName, String indexName) {
+		if (indexName != null && indexName.equals("/*")) {
+			// root only
+			return false;
+		}
+		UserData user = getUser(userName);
+		if (user == null) {
+			return false;
+		}
+		Set<String> indexFilters = Sets.newCopyOnWriteArraySet();
+		if (indexName != null && !indexName.equals("")) {
 			String[] indexNames = indexName.split(",");
 			for (String index : indexNames) {
 				if (index.charAt(0) != '/') {
 					index = "/" + index;
 				}
-				indices.add(index);
+				indexFilters.add(index);
 			}
-			user.setFilters(indices);
-			return putUser(user);
 		}
-		return false;
+		user.setFilters(indexFilters);
+		return putUser(user);
 	}
-
+	
 	/**
 	 * add permission to an user with a specified index
 	 * @param user
@@ -119,7 +152,7 @@ public class UserDataBridge {
 		UserData user = getUser(userName);
 		if (user == null) return false;
 		if (user.isValidPassword(password)) {
-			Set<String> indices = user.getFilters();
+			Set<String> indices = user.getIndexFilters();
 			if (indexName.charAt(0) != '/') {
 				indexName = "/" + indexName;
 			}
@@ -144,6 +177,14 @@ public class UserDataBridge {
 	}
 	
 	private boolean putUser(UserData user) {
+		String created = "";
+		if (user.getCreated() == null) {
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ");
+	        created = sdf.format(new Date());
+		} else {
+			created = user.getCreated();
+		}
+		
 		try {
 			@SuppressWarnings("unused")
 			IndexResponse resp = client.prepareIndex(HTTP_USER_AUTH_INDEX, HTTP_USER_AUTH_TYPE, user.getUsername())
@@ -151,8 +192,8 @@ public class UserDataBridge {
 			                    .startObject()
 			                        .field("username", user.getUsername())
 			                        .field("password", user.getPassword())
-			                        .field("indices", user.getFilters())
-			                        .field("created", new Date())
+			                        .field("indices", user.getIndexFilters())
+			                        .field("created", created)
 			                    .endObject()
 			                  )
 			        .execute()
@@ -213,8 +254,11 @@ public class UserDataBridge {
 
 	private void reloadUserDataCache() {
 		List<UserData> userDataList = getAllUserData();
+		if (userDataList == null) {
+			return ;
+		}
 		UserAuthenticator.reloadUserDataCache(userDataList);
-		if (userDataList != null) isInitialized = true;
+		isInitialized = true;
 	}
 	
 	/**
@@ -230,7 +274,7 @@ public class UserDataBridge {
 					.setSize(100)
 					.execute()
 					.actionGet();
-			if (res.getHits() != null) {
+			if (res.getFailedShards() == 0 && res.getHits() != null && res.getHits().hits() != null) {
 				List<UserData> userDataList = Lists.newCopyOnWriteArrayList();
 				SearchHit[] hits = res.getHits().hits();
 				for (int i = 0; i < hits.length; i++) {
@@ -238,6 +282,9 @@ public class UserDataBridge {
 					userDataList.add(getUserDataFromESSource(hit.getSource()));
 				}
 				return userDataList;
+			} else {
+				Loggers.getLogger(getClass()).error("Failed to get data from some shards");
+				return null;
 			}
 		} catch (Exception ex) {
 			// possibly the ES's loading process hasn't finished yet 
@@ -249,6 +296,7 @@ public class UserDataBridge {
 	private UserData getUserDataFromESSource(Map<String, Object> source) {
 		String userName = (String)source.get("username");
 		String password = (String)source.get("password");
+		String created  = (String)source.get("created");
 		Set<String> indices;
 		if (source.containsKey("indices")) {
 			@SuppressWarnings("unchecked")
@@ -257,6 +305,6 @@ public class UserDataBridge {
 		} else {
 			indices = Sets.newConcurrentHashSet();
 		}
-		return UserData.restoreFromESData(userName, password, indices);
+		return UserData.restoreFromESData(userName, password, created, indices);
 	}
 }

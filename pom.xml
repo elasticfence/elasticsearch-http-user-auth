@@ -31,11 +31,6 @@
     </dependencies>
 
     <build>
-        <resources>
-            <resource>
-            <directory>src/site/</directory>
-            </resource>
-        </resources>
         <plugins>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -57,5 +52,10 @@
                 </executions>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+            <directory>src/site/</directory>
+            </resource>
+        </resources>
     </build>
 </project>

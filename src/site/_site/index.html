@@ -59,6 +59,7 @@
 					    url: url, 
 					    success: function(data, status, xhr) {
 		 		    		alert("User added");
+		 		    		$("#addUser")[0].reset();
 		 		    		location.reload();
 						},
 					    error: function(data, status, xhr) {
@@ -75,29 +76,91 @@
 			event.preventDefault();
 	  	});
 	    
-
-		$.getJSON( "/_httpuserauth?mode=list", function( data ) {
-			var innerhtml = "";
-			for  (var i = 0; i < data.length; i++) {
-				innerhtml += "<tr>";
-				innerhtml += "<td>" + data[i].username + "</td>";
-// 				innerhtml += "<td>" + data[i].created + "</td>";
-				innerhtml += "<td>" + data[i].indices + "</td>";
-				innerhtml += "<td><a href='/_httpuserauth?mode=deleteuser&username=" + data[i].username + "'>Delete</a></td>";
-				innerhtml += "</tr>";
-			}
-			
-			  $("#tbody-userlist").html(innerhtml);
-			  
-			});
+	    reloadUserInfo();
 	});
+	function reloadUserInfo(delay) {
+		if (!delay) {
+			delay = 0;
+		}
+	    setTimeout(function(){
+			$.getJSON( "/_httpuserauth?mode=list", function( data ) {
+				var innerhtml = "";
+				for  (var i = 0; i < data.length; i++) {
+					var index_td_id = 'index_' + i;
+					innerhtml += "<tr>";
+					innerhtml += "<td>" + data[i].username + "</td>";
+					innerhtml += "<td>" + data[i].created + "</td>";
+					innerhtml += "<td><input class='input_indices' id='" + index_td_id + "' disabled=disabled type='text' value='" + data[i].indices + "'></td>";
+					innerhtml += "<td>"
+							+ "<a class='btn btn-default btn-xs indices_btn' role='button' href='#' onclick='editIndices(this, \"" + index_td_id + "\", \"" + data[i].username + "\");return false;'>Edit</a>"
+							+ "<a class='btn btn-default btn-xs btn-warning indices_btn' role='button' href='#' onclick='return deleteUser(\"" + data[i].username + "\")'>Del</a>"
+							+ "</td>";
+					innerhtml += "</tr>";
+				}
+				$("#tbody-userlist").html(innerhtml);
+			});
+	    },delay);
+	}
+	function editIndices(element, element_id, username) {
+		if ($(element).html() == "Edit") {
+			$(element).html("OK");
+		} else {
+			$(element).html("Edit");
+		}
+		if ($("#" + element_id).attr("disabled")) {
+			$("#" + element_id).removeAttr("disabled");
+		} else {
+			// update indices
+			var url = "/_httpuserauth?mode=updateindex&username=" + username + "&index=" + $("#" + element_id).val();
+			$.ajax({
+			    url: url, 
+			    success: function(data, status, xhr) {
+ 		    		alert("index added");
+		   		    reloadUserInfo(1000);
+				},
+			    error: function(data, status, xhr) {
+			    	alert("Failed to add index");
+		   	    	reloadUserInfo();
+		        },
+			});
+
+			$("#" + element_id).attr("disabled", "disabled");
+		}
+		return ;
+	}
+
+	function deleteUser(username) {
+		if (!confirm("Are you sure to delete?")) {
+			return false;
+		}
+		var url = "/_httpuserauth?mode=deleteuser&username=" + username;
+		$.ajax({
+		    url: url, 
+		    success: function(data, status, xhr) {
+   		    	reloadUserInfo(1000);
+			},
+		    error: function(data, status, xhr) {
+		    	alert("Failed to delete user");
+	        },
+		});
+
+		$("#" + element_id).attr("disabled", "disabled");
+	}
 	</script>
+	<style>
+		a.indices_btn {
+			margin-left:10px;
+		}
+		input.input_indices {
+			width:100%;
+		}
+	</style>
   </head>
 
   <body>
-	<a href="https://github.com/tomcono">
-	  <img style="z-index:10000;position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png">
-	</a>
+<!-- 	<a href="https://github.com/tomcono"> -->
+<!-- 	  <img style="z-index:10000;position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"> -->
+<!-- 	</a> -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -172,9 +235,10 @@
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th>Username</th>
-                  <th>Indices</th>
-                  <th></th>
+                  <th class="col-xs-1 col-ms-1 col-md-1 col-lg-1">Username</th>
+                  <th class="col-xs-1 col-ms-1 col-md-1 col-lg-1">Created</th>
+				  <th class="col-xs-3 col-ms-3 col-md-4 col-lg-4">Indices</th>
+				  <th class="col-xs-1 col-ms-1 col-md-1 col-lg-1"></th>
                 </tr>
               </thead>
               <tbody id="tbody-userlist">

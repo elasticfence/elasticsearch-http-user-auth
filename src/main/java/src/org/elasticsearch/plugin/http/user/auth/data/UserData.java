@@ -3,6 +3,7 @@ package org.elasticsearch.plugin.http.user.auth.data;
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Set;
@@ -13,49 +14,59 @@ import org.elasticsearch.common.collect.Sets;
 public class UserData {
 	private String username;
 	private String encPassword;
-	private Set<String> filters;
+	private Set<String> indexFilters;
+	private String created;
 	private UserData() {
 		
 	}
 	public UserData(String userName, String rawPassword) {
-		this.setUsername(userName);
-		this.setPassword(rawPassword);
+		setUsername(userName);
+		setPassword(rawPassword);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ");
+		setCreated(sdf.format(new Date()));
 		Set<String> indices = Sets.newConcurrentHashSet();
-		this.setFilters(indices);
+		setFilters(indices);
 	}
 	public UserData(String userName, String rawPassword, Set<String> filters) {
-		this.setUsername(userName);
-		this.setPassword(rawPassword);
+		setUsername(userName);
+		setPassword(rawPassword);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ");
+		setCreated(sdf.format(new Date()));
 		if (filters == null) {
 			filters = Sets.newConcurrentHashSet();
 		}
-		this.setFilters(filters);
+		setFilters(filters);
 	}
 	public UserData(String userName, String rawPassword, String... filters) {
-		this.setUsername(userName);
-		this.setPassword(rawPassword);
+		setUsername(userName);
+		setPassword(rawPassword);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ");
+		setCreated(sdf.format(new Date()));
 		if (filters == null) {
 			Set<String> filterSet = Sets.newConcurrentHashSet(Arrays.asList(filters));
-			this.setFilters(filterSet);
+			setFilters(filterSet);
 		} else {
 			Set<String> filterSet = Sets.newConcurrentHashSet();
-			this.setFilters(filterSet);
+			setFilters(filterSet);
 		}
 	}
 
-	public static UserData restoreFromESData(String username, String encPassword, Set<String> filters) {
+	public static UserData restoreFromESData(String username, String encPassword, String created, Set<String> indexFilters) {
 		UserData user = new UserData();
 		user.username = username;
 		user.encPassword = encPassword;
-		user.filters  = filters;
+		user.created = created;
+		user.indexFilters = indexFilters;
 		return user;
 	}
 
-	public static UserData restoreFromESData(String username, String encPassword, String... filters) {
+	public static UserData restoreFromESData(String username, String encPassword, String... indexFilters) {
 		UserData user = new UserData();
 		user.username = username;
 		user.encPassword = encPassword;
-		user.filters  = Sets.newConcurrentHashSet(Arrays.asList(filters));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ");
+		user.created = sdf.format(new Date());
+		user.indexFilters  = Sets.newConcurrentHashSet(Arrays.asList(indexFilters));
 		return user;
 	}
 	
@@ -63,12 +74,12 @@ public class UserData {
 		return DigestUtils.sha256Hex(rawPassword);
 	}
 	
-	public Set<String> getFilters() {
-		return filters;
+	public Set<String> getIndexFilters() {
+		return indexFilters;
 	}
 
-	public void setFilters(Set<String> filters) {
-		this.filters = filters;
+	public void setFilters(Set<String> indexFilters) {
+		this.indexFilters = indexFilters;
 	}
 
 	public String getPassword() {
@@ -86,6 +97,14 @@ public class UserData {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
+	public String getCreated() {
+		return created;
+	}
+	
+	public void setCreated(String created) {
+		this.created = created;
+	}
 	
 	public boolean isValidPassword(String rawPassword) {
 		if (encPassword.equals(encPassword(rawPassword))) {
@@ -96,17 +115,19 @@ public class UserData {
 	}
 	
 	public String toJSON() {
+		if (created == null) {
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ");
+	        created = sdf.format(new Date());
+		}
 		try {
 			return jsonBuilder()
 			.startObject()
 			    .field("username", username)
 			    .field("password", encPassword)
-			    .field("indices", filters)
-			    .field("created", new Date())
+			    .field("indices", indexFilters)
+			    .field("created", created)
 			.endObject().string();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		return "";
 	}

@@ -1,10 +1,13 @@
 package org.elasticsearch.plugin.http.user.auth;
 
+import static org.elasticsearch.rest.RestStatus.SERVICE_UNAVAILABLE;
+
 import java.util.Set;
 
+import org.elasticsearch.client.Client;
 import org.elasticsearch.common.collect.Sets;
 import org.elasticsearch.common.logging.Loggers;
-import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.plugin.http.user.auth.data.UserDataBridge;
 import org.elasticsearch.plugin.http.user.auth.tool.RequestAnalyzer;
 import org.elasticsearch.rest.BytesRestResponse;
 import org.elasticsearch.rest.RestChannel;
@@ -14,10 +17,9 @@ import org.elasticsearch.rest.RestRequest;
 import org.elasticsearch.rest.RestStatus;
 
 public class AuthRestFilter extends RestFilter {
-	@SuppressWarnings("unused")
-	private Settings settings;
-	public AuthRestFilter(Settings settings) {
-		this.settings = settings;
+	Client client;
+	public AuthRestFilter(Client client) {
+		this.client = client;
 	}
 	@Override
 	public void process(RestRequest request, RestChannel channel, RestFilterChain filterChain) throws Exception {
@@ -30,20 +32,26 @@ public class AuthRestFilter extends RestFilter {
 			} else {
 				paths.add(pathStr);
 			}
-	    	
+			
+	        UserDataBridge userDataBridge = new UserDataBridge(client);
+	        if (!userDataBridge.isInitialized()) {
+		        channel.sendResponse(new BytesRestResponse(SERVICE_UNAVAILABLE, "http user auth initializing..."));
+		        return ;
+	        }
+	        
 			// auth check
 			RequestAnalyzer requestAnalyzer = new RequestAnalyzer(request);
-			String user = requestAnalyzer.getUsername();
-			String pass = requestAnalyzer.getPassword();
-			if (user == null || pass == null) {
+			String username = requestAnalyzer.getUsername();
+			String password = requestAnalyzer.getPassword();
+			if (username == null || password == null) {
 				BytesRestResponse resp = new BytesRestResponse(RestStatus.UNAUTHORIZED, "Needs Basic Auth");
 				resp.addHeader("WWW-Authenticate", "Basic realm=\"Http User Auth Plugin\"");
 		        channel.sendResponse(resp);
-	            Loggers.getLogger(getClass()).info("auth failed: " + request.path());
+	            Loggers.getLogger(getClass()).error("auth failed: " + request.path());
 				return ;
 			}
 
-			UserAuthenticator userAuth = new UserAuthenticator(user, pass);
+			UserAuthenticator userAuth = new UserAuthenticator(username, password);
 			if (userAuth.isValidUser()) {
 				boolean passAll = true;
 				for (String path : paths) {
@@ -64,7 +72,7 @@ public class AuthRestFilter extends RestFilter {
 				BytesRestResponse resp = new BytesRestResponse(RestStatus.UNAUTHORIZED, "Needs Basic Auth");
 				resp.addHeader("WWW-Authenticate", "Basic realm=\"Http User Auth Plugin\"");
 		        channel.sendResponse(resp);
-	            Loggers.getLogger(getClass()).info("auth failed: " + request.path());
+	            Loggers.getLogger(getClass()).error("Invalid User: " + request.path());
 			}
 		} catch (Exception ex) {
 	        channel.sendResponse(new BytesRestResponse(RestStatus.INTERNAL_SERVER_ERROR, ""));
