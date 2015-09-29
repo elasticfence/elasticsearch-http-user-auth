@@ -3,15 +3,37 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <name>http-user-auth-plugin</name>
-
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>org.elasticsearch.plugin.http.user.auth</groupId>
     <artifactId>http-user-auth-plugin</artifactId>
     <version>1.0-SNAPSHOT</version>
-
     <packaging>jar</packaging>
-
+<!--     <packaging>pom</packaging> -->
+    <description>Elasticsearch http basic auth plugin</description>
+    <url>https://github.com/TomSearch/elasticsearch-http-user-auth/</url>
+    
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <url>https://github.com/TomSearch/elasticsearch-http-user-auth.git</url>
+        <connection>scm:git:git://github.com/TomSearch/elasticsearch-http-user-auth.git</connection>
+        <developerConnection>scm:git:git://github.com/TomSearch/elasticsearch-http-user-auth.git</developerConnection>
+    </scm>
+    
+    <developers>
+      <developer>
+        <name>Tom Search</name>
+        <email>tomsearch.tech@gmail.com</email>
+        <organization>person</organization>
+        <organizationUrl>https://github.com/TomSearch/elasticsearch-http-user-auth</organizationUrl>
+      </developer>
+    </developers>
+    
     <properties>
         <elasticsearch.version>1.7.0</elasticsearch.version>
     </properties>
@@ -26,7 +48,7 @@
         <dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.4</version>
+			<version>1.10</version>
 		</dependency>
     </dependencies>
 
@@ -52,10 +74,10 @@
                 </executions>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-            <directory>src/site/</directory>
-            </resource>
-        </resources>
+<!--         <resources> -->
+<!--             <resource> -->
+<!--                 <directory>src/site/</directory> -->
+<!--             </resource> -->
+<!--         </resources> -->
     </build>
 </project>
