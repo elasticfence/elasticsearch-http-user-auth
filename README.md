@@ -16,7 +16,7 @@ http.user.auth.root.password: rootpassword
 If you set `http.user.auth.disabled` to `true`, Elasticsearch won't load this plugin at boot time.   
 `http.user.auth.root.password` sets root user's password literally.  
 
-*Only the root user can access ES's root APIs (like /_cat, /_cluster) and all indices.*  
+**Only the root user can access ES's root APIs (like /_cat, /_cluster) and all indices.**  
 Other users can access URLs under their own indices that are specified with this plugin's API.   
 
 ## Add username and password in HTTP request 
