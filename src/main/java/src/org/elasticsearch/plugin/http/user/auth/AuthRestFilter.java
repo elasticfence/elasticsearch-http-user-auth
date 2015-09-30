@@ -33,12 +33,6 @@ public class AuthRestFilter extends RestFilter {
 				paths.add(pathStr);
 			}
 			
-	        UserDataBridge userDataBridge = new UserDataBridge(client);
-	        if (!userDataBridge.isInitialized()) {
-		        channel.sendResponse(new BytesRestResponse(SERVICE_UNAVAILABLE, "http user auth initializing..."));
-		        return ;
-	        }
-	        
 			// auth check
 			RequestAnalyzer requestAnalyzer = new RequestAnalyzer(request);
 			String username = requestAnalyzer.getUsername();
@@ -50,7 +44,15 @@ public class AuthRestFilter extends RestFilter {
 	            Loggers.getLogger(getClass()).error("auth failed: " + request.path());
 				return ;
 			}
-
+			
+			if (!username.equals("root")) {
+		        UserDataBridge userDataBridge = new UserDataBridge(client);
+		        if (!userDataBridge.isInitialized()) {
+			        channel.sendResponse(new BytesRestResponse(SERVICE_UNAVAILABLE, "http user auth initializing..."));
+			        return ;
+		        }
+			}
+	        
 			UserAuthenticator userAuth = new UserAuthenticator(username, password);
 			if (userAuth.isValidUser()) {
 				boolean passAll = true;
