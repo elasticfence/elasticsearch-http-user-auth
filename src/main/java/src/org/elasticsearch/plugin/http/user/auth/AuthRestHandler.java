@@ -100,7 +100,6 @@ public class AuthRestHandler extends BaseRestHandler {
 	        return;
 		}
 		
-		// TODO test following modes
 		if (mode.equals("passwd")) {
 			String userName = request.param("username");
 			String oldPassword = request.param("old_password");
@@ -126,22 +125,6 @@ public class AuthRestHandler extends BaseRestHandler {
 	        }
 	        return;
 		}
-
-		if (mode.equals("removeauth")) {
-			String userName  = request.param("username");
-			String password  = request.param("password");
-			String indexName = request.param("index");
-	        
-	        boolean res = userDataBridge.removeAuth(userName, password, indexName);
-	        if (res) {
-	        	channel.sendResponse(new BytesRestResponse(OK, "removed auth index : " + userName));
-	        } else {
-	        	channel.sendResponse(new BytesRestResponse(OK, "failed to remove auth index: " + userName));
-	        }
-	        return;
-		}
-		
-		
         channel.sendResponse(new BytesRestResponse(OK, "Failed"));
 	}
 }

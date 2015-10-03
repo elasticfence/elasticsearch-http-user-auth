@@ -65,8 +65,16 @@ public class UserDataBridge {
 		response += "]";
 		return response;
 	}
-
+	
 	public boolean createUser (String userName, String password) {
+		if (userName == null || userName.equals("")) {
+			return false;
+		}
+		userName = userName.toLowerCase();
+		if (userName.equals("root")) {
+			return false;
+		}
+		
 		UserData user = getUser(userName);
 		if (user != null) {
 			Loggers.getLogger(getClass()).error("username " + userName + " is already registered");
@@ -77,65 +85,82 @@ public class UserDataBridge {
 			return true;
 		}
 	}
-
+	
 	/**
-	 * add permission to an user with a specified index
+	 * add permission to an user with specified indices
 	 * @param user
 	 * @param password
 	 * @param path
 	 * @return
 	 */
 	public boolean addAuthIndex (String userName, String indexName) {
-		if (indexName != null && indexName.equals("/*")) {
-			// root only
+		if (userName == null || userName.equals("") || indexName == null || indexName.equals("")) {
 			return false;
 		}
+		userName = userName.toLowerCase();
+		indexName = indexName.toLowerCase();
+		if (userName.equals("root")) {
+			return false;
+		}
+
 		UserData user = getUser(userName);
 		if (user == null) {
 			return false;
 		}
 		Set<String> indexFilters = user.getIndexFilters();
-		if (indexName != null && !indexName.equals("")) {
-			String[] indexNames = indexName.split(",");
-			for (String index : indexNames) {
-				if (index.equals("")) {
-					continue;
-				}
-				if (index.charAt(0) != '/') {
-					index = "/" + index;
-				}
-				indexFilters.add(index);
+		String[] indexNames = indexName.split(",");
+		for (String index : indexNames) {
+			index = index.trim();
+			if (index == null || index.equals("")) {
+				continue;
 			}
-			user.setFilters(indexFilters);
+			if (index.charAt(0) != '/') {
+				index = "/" + index;
+			}
+			if (index.equals("/*") || index.equals("/")) {
+				continue;
+			}
+			indexFilters.add(index);
 		}
+		user.setFilters(indexFilters);
 		return putUser(user);
 	}
 	
 	/**
-	 * add permission to an user with a specified index
+	 * update permission of an user with specified indices
 	 * @param user
 	 * @param password
 	 * @param path
 	 * @return
 	 */
 	public boolean updateAuthIndex (String userName, String indexName) {
-		if (indexName != null && indexName.equals("/*")) {
-			// root only
+		if (userName == null || userName.equals("") || indexName == null || indexName.equals("")) {
 			return false;
 		}
+		userName = userName.toLowerCase();
+		indexName = indexName.toLowerCase();
+		if (userName.equals("root")) {
+			return false;
+		}
+
 		UserData user = getUser(userName);
 		if (user == null) {
 			return false;
 		}
 		Set<String> indexFilters = Sets.newCopyOnWriteArraySet();
-		if (indexName != null && !indexName.equals("")) {
-			String[] indexNames = indexName.split(",");
-			for (String index : indexNames) {
-				if (index.charAt(0) != '/') {
-					index = "/" + index;
-				}
-				indexFilters.add(index);
+		String[] indexNames = indexName.split(",");
+		for (String index : indexNames) {
+			index = index.trim();
+			if (index == null || index.equals("")) {
+				continue;
 			}
+			if (index.charAt(0) != '/') {
+				index = "/" + index;
+			}
+			if (index.equals("/*") || index.equals("/")) {
+				continue;
+			}
+			indexFilters.add(index);
 		}
 		user.setFilters(indexFilters);
 		return putUser(user);
@@ -149,6 +174,15 @@ public class UserDataBridge {
 	 * @return
 	 */
 	public boolean removeAuth (String userName, String password, String indexName) {
+		if (userName == null || userName.equals("") || indexName == null || indexName.equals("")) {
+			return false;
+		}
+		userName = userName.toLowerCase();
+		indexName = indexName.toLowerCase();
+		if (userName.equals("root")) {
+			return false;
+		}
+		
 		UserData user = getUser(userName);
 		if (user == null) return false;
 		if (user.isValidPassword(password)) {
