@@ -20,7 +20,7 @@ If you set `http.user.auth.disabled` to `true`, Elasticsearch won't load this pl
 **Only the root user can access ES's root APIs (like /_cat, /_cluster) and all indices.**  
 Other users can access URLs under their own indices that are specified with this plugin's API.  
 
-## Add username and password in HTTP request 
+## Add username and password on HTTP requests
 The authentication method of this plugin is Basic Authentication. Therefore, you should add your username and password on URL string. 
 
 For example, you can access the "You know, for search" API from *http://root:rootpassword@your.elasticsearch.hostname:9200/*
