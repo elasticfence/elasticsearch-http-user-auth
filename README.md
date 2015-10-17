@@ -44,6 +44,7 @@ elasticsearch_url: "http://root:rootpassword@localhost:9200"
 
 ## User Management Console
 
-This plugin also provide 
+This plugin provides a web console which manages users. 
+<pre>
 http://your.elasticsearch.hostname:9200/_plugin/http-user-auth-plugin/index.html
-
+</pre>
