@@ -4,6 +4,13 @@
     <formats>
         <format>zip</format>
     </formats>
+    <fileSets>
+        <fileSet>
+            <directory>${project.basedir}/src/site/</directory>
+            <useDefaultExcludes>true</useDefaultExcludes>
+            <outputDirectory>/</outputDirectory>
+        </fileSet>
+    </fileSets>
     <includeBaseDirectory>false</includeBaseDirectory>
     <dependencySets>
         <dependencySet>
