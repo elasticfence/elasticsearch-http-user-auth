@@ -110,6 +110,11 @@ http://your.elasticsearch.hostname:9200/_httpuserauth?mode=deleteuser&username=a
 <pre>
 http://your.elasticsearch.hostname:9200/_httpuserauth?mode=list
 </pre>
-<pre>
-[{"username":"admin","password":"7080bfe27990021c562398e79823h920e9a38aa5d3b10c5ff5d8c498305","indices":["/index-*"],"created":"2015-11-06T21:57:21+0100"}]
-</pre>
+```javascript
+[{ 
+  "username":"admin",
+  "password":"7080bfe27990021c562398e79823h920e9a38aa5d3b10c5ff5d8c498305",
+  "indices":["/_*"],
+  "created":"2015-11-06T21:57:21+0100"
+}]
+```
