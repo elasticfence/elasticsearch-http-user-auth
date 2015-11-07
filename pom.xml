@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.elasticsearch.plugin.http.user.auth</groupId>
     <artifactId>http-user-auth-plugin</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.01-SNAPSHOT</version>
     <packaging>jar</packaging>
 <!--     <packaging>pom</packaging> -->
     <description>Elasticsearch http basic auth plugin</description>
@@ -33,6 +33,15 @@
         <organizationUrl>https://github.com/TomSearch/elasticsearch-http-user-auth</organizationUrl>
       </developer>
     </developers>
+    <contributors>
+      <contributor>
+	<name>Lorenzo Mangani</name>
+	<email>lorenzo.mangani@gmail.com</email>
+	<organization>qxip</organization>
+	<organizationUrl>https://github.com/qxip</organizationUrl>
+	<timezone>Europe/Amsterdam</timezone>
+      </contributor>
+    </contributors>
     
     <properties>
         <elasticsearch.version>1.7.0</elasticsearch.version>
@@ -63,7 +72,7 @@
                 <version>2.3</version>
                 <configuration>
                     <appendAssemblyId>false</appendAssemblyId>
-                    <outputDirectory>${project.build.directory}/releases/</outputDirectory>
+                    <outputDirectory>${project.build.directory}/../jar/</outputDirectory>
                     <descriptors>
                         <descriptor>${basedir}/src/main/assemblies/plugin.xml</descriptor>
                     </descriptors>
