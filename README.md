@@ -1,3 +1,5 @@
+![](https://travis-ci.org/lmangani/elasticsearch-http-user-auth.svg)
+
 # Elasticsearch HTTP Basic User Auth plugin (and its web console)
 
 Elasticsearch user authentication plugin with http basic auth.
