@@ -86,27 +86,27 @@ http://your.elasticsearch.hostname:9200/_plugin/http-user-auth-plugin/index.html
 This plugin provides a web API to manage users and permissions.
 ![](http://i.imgur.com/r26mGAl.png)
 
-#### Add User:
+##### Add User:
 <pre>
 http://your.elasticsearch.hostname:9200/_httpuserauth?mode=adduser&username=admin&password=somepass
 </pre>
 
-#### Add Index Permissions:
+##### Add Index Permissions:
 <pre>
 http://your.elasticsearch.hostname:9200/_httpuserauth?mode=addindex&username=admin&password=somepass&index=index*
 </pre>
 
-#### Update Index Permissions:
+##### Update Index Permissions:
 <pre>
 http://your.elasticsearch.hostname:9200/_httpuserauth?mode=updateindex&username=admin&index=index-*
 </pre>
 
-#### Delete User:
+##### Delete User:
 <pre>
 http://your.elasticsearch.hostname:9200/_httpuserauth?mode=deleteuser&username=admin
 </pre>
 
-#### List User(s):
+##### List User(s):
 <pre>
 http://your.elasticsearch.hostname:9200/_httpuserauth?mode=list
 </pre>
