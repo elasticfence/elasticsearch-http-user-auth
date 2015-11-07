@@ -30,9 +30,31 @@ If you set `http.user.auth.disabled` to `true`, Elasticsearch doesn't load this 
 Other users can access URLs under their own indices that are specified with this plugin's API.  
 
 ## Add username and password on HTTP requests
-The authentication method of this plugin is Basic Authentication. Therefore, you should add your username and password on URL string. 
+The authentication method of this plugin is Basic Authentication. Therefore, you should add your username and password on URL string. For example: 
 
-For example, you can access the "You know, for search" API from *http://root:rootpassword@your.elasticsearch.hostname:9200/*
+<pre>
+http://root:rootpassword@your.elasticsearch.hostname:9200/
+</pre>
+
+###### CURL
+<pre>
+curl -u root:rootpassword http://your.elasticsearch.hostname:9200/
+</pre>
+```javascript
+{
+  "status" : 200,
+  "name" : "Piranha",
+  "cluster_name" : "elastic1",
+  "version" : {
+    "number" : "1.7.3",
+    "build_hash" : "05d4530971ef0ea46d0f4fa6ee64dbc8df659682",
+    "build_timestamp" : "2015-10-15T09:14:17Z",
+    "build_snapshot" : false,
+    "lucene_version" : "4.10.4"
+  },
+  "tagline" : "You Know, for Search"
+}
+```
 
 Plugins using ES's REST API also have to be set root password in their configurations.
 
