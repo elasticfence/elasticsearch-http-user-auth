@@ -78,10 +78,15 @@
                 </executions>
             </plugin>
         </plugins>
-<!--         <resources> -->
-<!--             <resource> -->
-<!--                 <directory>src/site/</directory> -->
-<!--             </resource> -->
-<!--         </resources> -->
+	 <resources>
+             <resource>
+                 <directory>src/site/</directory>
+                 <filtering>false</filtering>
+                 <targetPath>..</targetPath>
+                 <includes>
+                        <include>**/*</include>
+                 </includes>
+             </resource>
+         </resources>
     </build>
 </project>
