@@ -45,10 +45,12 @@ marvel.agent.exporter.es.hosts: ["root:rootpassword@127.0.0.1:9200"]
 </pre>
 
 #### Kibana 4
-kibana.yml: 
+kibana.yml:
 <pre>
-elasticsearch_url: "http://root:rootpassword@localhost:9200"
+elasticsearch.username: root
+elasticsearch.password: rootpassword
 </pre>
+
 
 
 ## User Management Console
