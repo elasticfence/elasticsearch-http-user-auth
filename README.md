@@ -14,7 +14,7 @@ bin/plugin --url https://raw.githubusercontent.com/TomSearch/elasticsearch-http-
 #### Build with Maven
 <pre>
 mvn package clean
-bin/plugin --url file:///path/to/repo/jar/http-user-auth-plugin-1.01-SNAPSHOT.zip --install http-user-auth-plugin
+bin/plugin --url file:///path/to/repo/jar/http-user-auth-plugin-1.0-SNAPSHOT.zip --install http-user-auth-plugin
 </pre>
 
 ## Configuration
