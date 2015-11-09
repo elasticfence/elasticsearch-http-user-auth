@@ -1,10 +1,17 @@
 ![](https://travis-ci.org/lmangani/elasticsearch-http-user-auth.svg)
 
+![](http://i.imgur.com/OFFgrm8.png?1)
+
 # Elasticsearch HTTP Basic User Auth plugin
 
 Elasticsearch user authentication plugin with http basic auth and IP ACL
 
 This plugin provides user authentication APIs and a User management we console. 
+
+| Version        | Release           | Branch  |
+| ------------- |:-------------:| -----:|
+| Elasticsearch 1.x | 1.0-SNAPSHOT | [master](https://github.com/lmangani/elasticsearch-http-user-auth/tree/master) |
+| Elasticsearch 2.x | 2.0-SNAPSHOT | [2.0](https://github.com/lmangani/elasticsearch-http-user-auth/tree/2.0) |
 
 ## Installation 
 <pre>
