@@ -24,10 +24,19 @@ http.user.auth.disabled: false
 http.user.auth.root.password: rootpassword
 </pre>
 
-If you set `http.user.auth.disabled` to `true`, Elasticsearch doesn't load this plugin.  
-`http.user.auth.root.password` sets root user's password literally.  
-**Only the root user can access ES's root APIs (like /_cat, /_cluster) and all indices.**  
+To disable the plugin set `http.user.auth.disabled` to `true`  
+
+To set the root password on each start use `http.user.auth.root.password`   
+**Only the root user can access ES's root APIs (like /_cat, /_cluster) and all indices.**
+
 Other users can access URLs under their own indices that are specified with this plugin's API.  
+
+### Basic IP ACL
+IPs contained in whitelist/blacklist arrays will bypass authentication
+<pre>
+http.user.auth.whitelist: ["127.0.0.1", "10.0.0.1"]
+http.user.auth.whitelist: ["127.0.0.2", "10.0.0.100"]
+</pre>
 
 ## Add username and password on HTTP requests
 The authentication method of this plugin is Basic Authentication. Therefore, you should add your username and password on URL string. For example: 
