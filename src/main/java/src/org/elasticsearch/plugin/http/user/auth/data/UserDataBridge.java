@@ -23,6 +23,7 @@ import org.elasticsearch.common.collect.Sets;
 import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.plugin.http.user.auth.UserAuthenticator;
+import org.elasticsearch.plugin.http.user.auth.IPAuthenticator;
 import org.elasticsearch.search.SearchHit;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.*;

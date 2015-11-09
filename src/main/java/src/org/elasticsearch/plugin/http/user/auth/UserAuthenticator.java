@@ -3,6 +3,7 @@ package org.elasticsearch.plugin.http.user.auth;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,6 +17,7 @@ import org.elasticsearch.plugin.http.user.auth.data.UserData;
  */
 public class UserAuthenticator {
 	private static String rootPassword = "";
+
 	// a map of all users' username => UserData 
 	private static Map<String, UserData> users;
 	private UserData user;
@@ -212,4 +214,5 @@ public class UserAuthenticator {
 		if (index.startsWith("_")) return "/";
 		return "/" + index;
 	}
+
 }

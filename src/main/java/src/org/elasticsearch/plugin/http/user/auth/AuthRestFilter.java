@@ -3,10 +3,14 @@ package org.elasticsearch.plugin.http.user.auth;
 import static org.elasticsearch.rest.RestStatus.SERVICE_UNAVAILABLE;
 
 import java.util.Set;
+import java.util.Arrays;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.collect.Sets;
 import org.elasticsearch.common.logging.Loggers;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.plugin.http.user.auth.data.UserDataBridge;
 import org.elasticsearch.plugin.http.user.auth.tool.RequestAnalyzer;
 import org.elasticsearch.rest.BytesRestResponse;
@@ -17,6 +21,10 @@ import org.elasticsearch.rest.RestRequest;
 import org.elasticsearch.rest.RestStatus;
 
 public class AuthRestFilter extends RestFilter {
+	Settings settings;
+	public AuthRestFilter(Settings settings) {
+		this.settings = settings;
+	}
 	Client client;
 	public AuthRestFilter(Client client) {
 		this.client = client;
@@ -33,6 +41,21 @@ public class AuthRestFilter extends RestFilter {
 				paths.add(pathStr);
 			}
 			
+			// IP Check
+			String ipaddr = ((InetSocketAddress) request.getRemoteAddress()).getAddress().getHostAddress();
+	            	Loggers.getLogger(getClass()).error("Request from IP: " + ipaddr);
+			IPAuthenticator ipAuthenticator = new IPAuthenticator();
+			if ( ipAuthenticator.isWhitelisted(ipaddr) ) {
+		             	Loggers.getLogger(getClass()).error("Request from IP is whitelisted: " + ipaddr);
+					filterChain.continueProcessing(request, channel);
+					return;
+			} else if ( ipAuthenticator.isBlacklisted(ipaddr) ) {
+		             	Loggers.getLogger(getClass()).error("Request from IP is blacklisted: " + ipaddr);
+					BytesRestResponse resp = new BytesRestResponse(RestStatus.FORBIDDEN, "Forbidden IP");
+			        	channel.sendResponse(resp);
+					return;
+			}
+
 			// auth check
 			RequestAnalyzer requestAnalyzer = new RequestAnalyzer(request);
 			String username = requestAnalyzer.getUsername();

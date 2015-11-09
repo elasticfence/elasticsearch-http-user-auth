@@ -1,5 +1,6 @@
 package org.elasticsearch.plugin.http.user.auth;
 import java.util.Collection;
+import java.util.Arrays;
 
 import org.elasticsearch.common.collect.Lists;
 import org.elasticsearch.common.inject.Inject;
@@ -34,6 +35,11 @@ public class HttpUserAuthPlugin extends AbstractPlugin {
         	if (rootPassword != null && !rootPassword.equals("")) {
         		UserAuthenticator.setRootPassword(rootPassword);
         		UserAuthenticator.loadRootUserDataCacheOnStart();
+        	}
+        	String[] whitelist = settings.getAsArray("http.user.auth.whitelist", new String[]{"localhost", "127.0.0.1"});
+        	if (whitelist != null ) {
+        		IPAuthenticator.setWhitelist(whitelist);
+	            	Loggers.getLogger(getClass()).warn("http-user-auth plugin IP whitelist enabled " + Arrays.toString(whitelist));
         	}
     		
             Collection<Class<? extends Module>> modules = Lists.newArrayList();
