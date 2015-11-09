@@ -1,20 +1,20 @@
 ![](https://travis-ci.org/lmangani/elasticsearch-http-user-auth.svg)
 
-# Elasticsearch HTTP Basic User Auth plugin
+# Elasticsearch HTTP Basic User Auth plugin 2.x
 
-Elasticsearch user authentication plugin with http basic auth.
+Elasticsearch 2.x user authentication plugin with http basic auth.
 
 This plugin provides user authentication APIs and a User management we console. 
 
 ## Installation 
 <pre>
-bin/plugin --url https://raw.githubusercontent.com/TomSearch/elasticsearch-http-user-auth/master/jar/http-user-auth-plugin-1.0-SNAPSHOT.jar --install http-user-auth-plugin
+bin/plugin --url https://raw.githubusercontent.com/TomSearch/elasticsearch-http-user-auth/master/jar/http-user-auth-plugin-2.0-SNAPSHOT.jar --install http-user-auth-plugin
 </pre>
 
 #### Build with Maven
 <pre>
 mvn package clean
-bin/plugin --url file:///path/to/repo/jar/http-user-auth-plugin-1.0-SNAPSHOT.zip --install http-user-auth-plugin
+bin/plugin --url file:///path/to/repo/jar/http-user-auth-plugin-2.0-SNAPSHOT.zip --install http-user-auth-plugin
 </pre>
 
 ## Configuration
