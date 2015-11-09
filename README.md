@@ -1,5 +1,7 @@
 ![](https://travis-ci.org/lmangani/elasticsearch-http-user-auth.svg)
 
+![](http://i.imgur.com/OFFgrm8.png?1)
+
 # Elasticsearch HTTP Basic User Auth and IP ACL plugin 2.x
 
 Elasticsearch 2.x user authentication plugin with http basic auth and basic IP ACL.
