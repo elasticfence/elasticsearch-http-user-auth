@@ -2,7 +2,7 @@
 
 # Elasticsearch HTTP Basic User Auth plugin
 
-Elasticsearch user authentication plugin with http basic auth.
+Elasticsearch user authentication plugin with http basic auth and IP ACL
 
 This plugin provides user authentication APIs and a User management we console. 
 
