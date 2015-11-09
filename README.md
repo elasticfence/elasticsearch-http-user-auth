@@ -1,10 +1,10 @@
 ![](https://travis-ci.org/lmangani/elasticsearch-http-user-auth.svg)
 
-# Elasticsearch HTTP Basic User Auth plugin 2.x
+# Elasticsearch HTTP Basic User Auth and IP ACL plugin 2.x
 
-Elasticsearch 2.x user authentication plugin with http basic auth.
+Elasticsearch 2.x user authentication plugin with http basic auth and basic IP ACL.
 
-This plugin provides user authentication APIs and a User management we console. 
+This plugin provides user authentication APIs and a User management web console. 
 
 ## Installation 
 <pre>
