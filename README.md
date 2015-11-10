@@ -37,7 +37,7 @@ Other users can access URLs under their own indices that are specified with this
 IPs contained in whitelist/blacklist arrays will bypass authentication
 <pre>
 http.user.auth.whitelist: ["127.0.0.1", "10.0.0.1"]
-http.user.auth.whitelist: ["127.0.0.2", "10.0.0.100"]
+http.user.auth.blacklist: ["127.0.0.2", "10.0.0.100"]
 </pre>
 
 ## Add username and password on HTTP requests
