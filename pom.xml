@@ -4,6 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <name>http-user-auth-plugin</name>
     <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+    	<groupId>org.elasticsearch.plugin</groupId>
+    	<artifactId>plugins</artifactId>
+    	<version>2.0.0</version>
+    </parent>
+
     <groupId>org.elasticsearch.plugin.http.user.auth</groupId>
     <artifactId>http-user-auth-plugin</artifactId>
     <version>2.0-SNAPSHOT</version>
@@ -43,6 +50,13 @@
     
     <properties>
         <elasticsearch.version>2.0.0</elasticsearch.version>
+<<<<<<< HEAD
+=======
+        <elasticsearch.plugin.site>true</elasticsearch.plugin.site>
+        <elasticsearch.plugin.jvm>true</elasticsearch.plugin.jvm>
+        <elasticsearch.plugin.classname>org.elasticsearch.plugin.http.user.auth.HttpUserAuthPlugin</elasticsearch.plugin.classname>
+        
+>>>>>>> 4fcd07293c26d2aae0f575e718feba794c72f47e
     	<maven.compiler.source>1.7</maven.compiler.source>
     	<maven.compiler.target>1.7</maven.compiler.target>
     </properties>
