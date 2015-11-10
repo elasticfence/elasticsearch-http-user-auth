@@ -8,7 +8,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
 import org.elasticsearch.client.Client;
-import org.elasticsearch.common.collect.Sets;
+import com.google.common.collect.Sets;
 import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.plugin.http.user.auth.data.UserDataBridge;
@@ -44,6 +44,7 @@ public class AuthRestFilter extends RestFilter {
 			// IP Check
 			String ipaddr = ((InetSocketAddress) request.getRemoteAddress()).getAddress().getHostAddress();
 	            	Loggers.getLogger(getClass()).error("Request from IP: " + ipaddr);
+
 			IPAuthenticator ipAuthenticator = new IPAuthenticator();
 			if ( ipAuthenticator.isWhitelisted(ipaddr) ) {
 		             	Loggers.getLogger(getClass()).error("Request from IP is whitelisted: " + ipaddr);

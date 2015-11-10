@@ -26,6 +26,7 @@
             <useTransitiveFiltering>true</useTransitiveFiltering>
             <excludes>
                 <exclude>org.elasticsearch:elasticsearch</exclude>
+                <exclude>com.google:guava:jar:*</exclude>
             </excludes>
         </dependencySet>
     </dependencySets>

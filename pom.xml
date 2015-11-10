@@ -42,7 +42,7 @@
     </developers>
     
     <properties>
-        <elasticsearch.version>1.7.0</elasticsearch.version>
+        <elasticsearch.version>2.0.0</elasticsearch.version>
     	<maven.compiler.source>1.7</maven.compiler.source>
     	<maven.compiler.target>1.7</maven.compiler.target>
     </properties>
@@ -58,7 +58,14 @@
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 			<version>1.10</version>
-		</dependency>
+	</dependency>
+	 <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>19.0-rc1</version>
+	    <scope>compile</scope>
+      	    <optional>true</optional> 
+        </dependency>
     </dependencies>
 
     <build>

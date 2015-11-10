@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.elasticsearch.common.collect.Maps;
+import com.google.common.collect.Maps;
 import org.elasticsearch.common.logging.ESLoggerFactory;
 import org.elasticsearch.plugin.http.user.auth.data.UserData;
 

@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.elasticsearch.common.collect.Sets;
+import com.google.common.collect.Sets;
 
 public class UserData {
 	private String username;

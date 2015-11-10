@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 
 import org.elasticsearch.rest.RestRequest;
 
-import sun.misc.BASE64Decoder;
+import org.elasticsearch.common.Base64;
 
 public class RequestAnalyzer {
 	private String username;
@@ -27,10 +27,10 @@ public class RequestAnalyzer {
 					if (authArr[i].equals("")) {
 						continue;
 					}
-					BASE64Decoder dec = new BASE64Decoder();
+
 				    String userPass = "";
 					try {
-						userPass = new String(dec.decodeBuffer(authArr[i]), "UTF-8");
+						userPass = new String(Base64.decode(authArr[i]), "UTF-8");
 					} catch (UnsupportedEncodingException e) {
 						e.printStackTrace();
 					} catch (IOException e) {

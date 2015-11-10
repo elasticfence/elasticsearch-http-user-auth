@@ -23,6 +23,7 @@ public class IPAuthenticator {
         }
 
         public boolean isWhitelisted(String ip) {
+		if (whitelist == null) return false;
                 if ( Arrays.asList(whitelist).contains(ip) ) {
                         return true;
                 } else {
@@ -35,6 +36,7 @@ public class IPAuthenticator {
         }
 
         public boolean isBlacklisted(String ip) {
+		if (blacklist == null) return false;
                 if ( Arrays.asList(blacklist).contains(ip) ) {
                         return true;
                 } else {
