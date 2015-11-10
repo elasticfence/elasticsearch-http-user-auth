@@ -7,9 +7,9 @@ import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.inject.Module;
 import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.plugins.AbstractPlugin;
+import org.elasticsearch.plugins.Plugin;
 
-public class HttpUserAuthPlugin extends AbstractPlugin {
+public class HttpUserAuthPlugin extends Plugin {
     private Settings settings;
     @Inject public HttpUserAuthPlugin(Settings settings) {
         this.settings = settings;
