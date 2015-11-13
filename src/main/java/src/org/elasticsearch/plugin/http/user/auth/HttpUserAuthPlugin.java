@@ -45,11 +45,17 @@ public class HttpUserAuthPlugin extends Plugin {
         		UserAuthenticator.setRootPassword(rootPassword);
         		UserAuthenticator.loadRootUserDataCacheOnStart();
         	}
+
         	String[] whitelist = settings.getAsArray("http.user.auth.whitelist", new String[]{"127.0.0.1"});
         	String[] blacklist = settings.getAsArray("http.user.auth.blacklist", new String[]{});
+
         	if (whitelist != null ) {
         		IPAuthenticator.setWhitelist(whitelist);
 	            	Loggers.getLogger(getClass()).warn("http-user-auth plugin IP whitelist enabled " + Arrays.toString(whitelist));
+        	}
+        	if (blacklist != null ) {
+        		IPAuthenticator.setBlacklist(blacklist);
+	            	Loggers.getLogger(getClass()).warn("http-user-auth plugin IP blacklist enabled " + Arrays.toString(blacklist));
         	}
     		
             module.addRestAction(AuthRestHandler.class);
