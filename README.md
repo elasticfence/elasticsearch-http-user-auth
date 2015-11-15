@@ -1,22 +1,20 @@
 ![](https://travis-ci.org/lmangani/elasticsearch-http-user-auth.svg)
 
 ![](http://i.imgur.com/OFFgrm8.png?1)
+# ElasticFence
+## Elasticsearch 2.x HTTP Basic User Auth and IP ACL plugin
 
-# Elasticsearch HTTP Basic User Auth and IP ACL plugin 2.x
-
-Elasticsearch 2.x user authentication plugin with http basic auth and basic IP ACL.
-
-This plugin provides user authentication APIs and a User management web console. 
+ElasticFence extends the built-in high performance HTTP server embedded in Elasticsearch to provide http basic authentication and IP access-control whitelists/blacklists. The plugin also provides a _site for user authentication APIs and a User management web console. 
 
 ## Installation 
 <pre>
-bin/plugin --url https://raw.githubusercontent.com/TomSearch/elasticsearch-http-user-auth/master/jar/http-user-auth-plugin-2.0-SNAPSHOT.jar --install http-user-auth-plugin
+bin/plugin install https://cdn.rawgit.com/lmangani/elasticsearch-http-user-auth/2.0/jar/http-user-auth-plugin-2.0-SNAPSHOT.zip
 </pre>
 
 #### Build with Maven
 <pre>
 mvn package clean
-bin/plugin --url file:///path/to/repo/jar/http-user-auth-plugin-2.0-SNAPSHOT.zip --install http-user-auth-plugin
+bin/plugin install file:///path/to/repo/jar/http-user-auth-plugin-2.0-SNAPSHOT.zip
 </pre>
 
 ## Configuration
@@ -34,7 +32,7 @@ To set the root password on each start use `http.user.auth.root.password`
 Other users can access URLs under their own indices that are specified with this plugin's API.  
 
 ### Basic IP ACL
-IPs contained in whitelist/blacklist arrays will bypass authentication
+IPs contained in whitelist/blacklist arrays will bypass authentication. By default 127.0.0.1 is allowed.
 <pre>
 http.user.auth.whitelist: ["127.0.0.1", "10.0.0.1"]
 http.user.auth.blacklist: ["127.0.0.2", "10.0.0.100"]
