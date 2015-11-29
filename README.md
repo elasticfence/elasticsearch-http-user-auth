@@ -1,4 +1,4 @@
-![](https://travis-ci.org/lmangani/elasticsearch-http-user-auth.svg)
+![](https://travis-ci.org/qxip/elasticsearch-http-user-auth.svg)
 
 ![](http://i.imgur.com/OFFgrm8.png?1)
 # ElasticFence
@@ -8,7 +8,7 @@ ElasticFence extends the built-in high performance HTTP server embedded in Elast
 
 ## Installation 
 <pre>
-bin/plugin install https://cdn.rawgit.com/lmangani/elasticsearch-http-user-auth/2.0/jar/http-user-auth-plugin-2.0-SNAPSHOT.zip
+bin/plugin install https://cdn.rawgit.com/qxip/elasticsearch-http-user-auth/2.0/jar/http-user-auth-plugin-2.0-SNAPSHOT.zip
 </pre>
 
 #### Build with Maven
