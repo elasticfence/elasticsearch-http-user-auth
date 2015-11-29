@@ -1,4 +1,4 @@
-![](https://travis-ci.org/qxip/elasticsearch-http-user-auth.svg)
+![](https://travis-ci.org/QXIP/elasticsearch-http-user-auth.svg)
 
 ![](http://i.imgur.com/OFFgrm8.png?1)
 # ElasticFence
