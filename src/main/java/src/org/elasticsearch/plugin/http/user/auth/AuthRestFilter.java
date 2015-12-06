@@ -43,11 +43,11 @@ public class AuthRestFilter extends RestFilter {
 			
 			// IP Check
 			String ipaddr = ((InetSocketAddress) request.getRemoteAddress()).getAddress().getHostAddress();
-	            	Loggers.getLogger(getClass()).error("Request from IP: " + ipaddr);
+	            	// Loggers.getLogger(getClass()).error("Request from IP: " + ipaddr);
 
 			IPAuthenticator ipAuthenticator = new IPAuthenticator();
 			if ( ipAuthenticator.isWhitelisted(ipaddr) ) {
-		             	Loggers.getLogger(getClass()).error("Request from IP is whitelisted: " + ipaddr);
+		             	// Loggers.getLogger(getClass()).error("Request from IP is whitelisted: " + ipaddr);
 					filterChain.continueProcessing(request, channel);
 					return;
 			} else if ( ipAuthenticator.isBlacklisted(ipaddr) ) {
