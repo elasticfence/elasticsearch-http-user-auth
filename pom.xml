@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 <!--     <packaging>pom</packaging> -->
     <description>Elasticsearch http basic auth plugin</description>
-    <url>https://github.com/TomSearch/elasticsearch-http-user-auth/</url>
+    <url>https://github.com/elasticfence/elasticsearch-http-user-auth/</url>
     
     <licenses>
         <license>
@@ -20,9 +20,9 @@
         </license>
     </licenses>
     <scm>
-        <url>https://github.com/TomSearch/elasticsearch-http-user-auth.git</url>
-        <connection>scm:git:git://github.com/TomSearch/elasticsearch-http-user-auth.git</connection>
-        <developerConnection>scm:git:git://github.com/TomSearch/elasticsearch-http-user-auth.git</developerConnection>
+        <url>https://github.com/elasticfence/elasticsearch-http-user-auth.git</url>
+        <connection>scm:git:git://github.com/elasticfence/elasticsearch-http-user-auth.git</connection>
+        <developerConnection>scm:git:git://github.com/elasticfence/elasticsearch-http-user-auth.git</developerConnection>
     </scm>
     
     <developers>
