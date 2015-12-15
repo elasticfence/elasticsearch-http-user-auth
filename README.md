@@ -1,4 +1,4 @@
-![](https://travis-ci.org/lmangani/elasticsearch-http-user-auth.svg)
+![](https://travis-ci.org/elasticfence/elasticsearch-http-user-auth.svg)
 
 ![](http://i.imgur.com/OFFgrm8.png?1)
 
@@ -10,12 +10,12 @@ This plugin provides user authentication APIs and a User management web console.
 
 | Version        | Release           | Branch  |
 | ------------- |:-------------:| -----:|
-| Elasticsearch 1.x | 1.0-SNAPSHOT | [master](https://github.com/lmangani/elasticsearch-http-user-auth/tree/master) |
-| Elasticsearch 2.x | 2.0-SNAPSHOT | [2.0](https://github.com/lmangani/elasticsearch-http-user-auth/tree/2.0) |
+| Elasticsearch 1.x | 1.0-SNAPSHOT | [master](https://github.com/elasticfence/elasticsearch-http-user-auth/tree/master) |
+| Elasticsearch 2.x | 2.0-SNAPSHOT | [2.0](https://github.com/elasticfence/elasticsearch-http-user-auth/tree/2.0) |
 
 ## Installation 
 <pre>
-bin/plugin --url https://raw.githubusercontent.com/TomSearch/elasticsearch-http-user-auth/master/jar/http-user-auth-plugin-1.0-SNAPSHOT.jar --install http-user-auth-plugin
+bin/plugin --url https://raw.githubusercontent.com/elasticfence/elasticsearch-http-user-auth/master/jar/http-user-auth-plugin-1.0-SNAPSHOT.jar --install http-user-auth-plugin
 </pre>
 
 #### Build with Maven
