@@ -1,8 +1,6 @@
 package org.elasticsearch.plugin.http.user.auth;
 
-import java.util.List;
 import java.util.Arrays;
-import org.elasticsearch.common.logging.Loggers;
 
 public class IPAuthenticator {
 

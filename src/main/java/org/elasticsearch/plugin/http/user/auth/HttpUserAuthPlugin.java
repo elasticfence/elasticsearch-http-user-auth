@@ -1,11 +1,7 @@
 package org.elasticsearch.plugin.http.user.auth;
 
-import java.util.Collection;
 import java.util.Arrays;
 
-import com.google.common.collect.Lists;
-import org.elasticsearch.common.inject.Inject;
-import org.elasticsearch.common.inject.Module;
 import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.rest.RestModule;

@@ -3,14 +3,11 @@ package org.elasticsearch.plugin.http.user.auth;
 import static org.elasticsearch.rest.RestStatus.SERVICE_UNAVAILABLE;
 
 import java.util.Set;
-import java.util.Arrays;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
 import org.elasticsearch.client.Client;
 import com.google.common.collect.Sets;
 import org.elasticsearch.common.logging.Loggers;
-import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.plugin.http.user.auth.data.UserDataBridge;
 import org.elasticsearch.plugin.http.user.auth.tool.RequestAnalyzer;
 import org.elasticsearch.rest.BytesRestResponse;
@@ -21,10 +18,6 @@ import org.elasticsearch.rest.RestRequest;
 import org.elasticsearch.rest.RestStatus;
 
 public class AuthRestFilter extends RestFilter {
-	Settings settings;
-	public AuthRestFilter(Settings settings) {
-		this.settings = settings;
-	}
 	Client client;
 	public AuthRestFilter(Client client) {
 		this.client = client;

@@ -1,6 +1,5 @@
 package org.elasticsearch.plugin.http.user.auth.data;
 
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,7 +22,6 @@ import com.google.common.collect.Sets;
 import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.plugin.http.user.auth.UserAuthenticator;
-import org.elasticsearch.plugin.http.user.auth.IPAuthenticator;
 import org.elasticsearch.search.SearchHit;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.*;
