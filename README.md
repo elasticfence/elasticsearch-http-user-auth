@@ -4,7 +4,7 @@
 # ElasticFence
 ### Elasticsearch 2.x HTTP Basic User Auth and IP ACL plugin
 
-ElasticFence extends the built-in high performance HTTP server embedded in Elasticsearch to provide HTTP basic authentication and IP access-control whitelists/blacklists. The plugin also provides an embedded _site for user authentication APIs and a User management web console. 
+ElasticFence extends the built-in high performance HTTP server embedded in Elasticsearch to provide HTTP basic authentication and IP access-control whitelists/blacklists. The plugin also provides an embedded [_site](#user-management-api) for user authentication APIs and a User management web console. 
 
 ## Installation 
 <pre>
