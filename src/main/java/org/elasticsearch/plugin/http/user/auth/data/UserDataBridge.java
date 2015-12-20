@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
@@ -13,7 +14,6 @@ import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
-import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
@@ -219,8 +219,7 @@ public class UserDataBridge {
 		}
 		
 		try {
-			@SuppressWarnings("unused")
-			IndexResponse resp = client.prepareIndex(HTTP_USER_AUTH_INDEX, HTTP_USER_AUTH_TYPE, user.getUsername())
+			client.prepareIndex(HTTP_USER_AUTH_INDEX, HTTP_USER_AUTH_TYPE, user.getUsername())
 			        .setSource(jsonBuilder()
 			                    .startObject()
 			                        .field("username", user.getUsername())
@@ -229,10 +228,13 @@ public class UserDataBridge {
 			                        .field("created", created)
 			                    .endObject()
 			                  )
+			        .setRefresh(true)
 			        .execute()
-			        .actionGet();
+			        .get();
 			reloadUserDataCache();
 			return true;
+		} catch (InterruptedException | ExecutionException e) {
+			Loggers.getLogger(getClass()).error("InterruptedException | ExecutionException", e);
 		} catch (ElasticsearchException e) {
 			Loggers.getLogger(getClass()).error("ElasticsearchException", e);
 		} catch (IOException e) {
@@ -242,28 +244,38 @@ public class UserDataBridge {
 	}
 	
 	private UserData getUser(String userName) {
-		GetResponse response = client.prepareGet(HTTP_USER_AUTH_INDEX, HTTP_USER_AUTH_TYPE, userName)
-		        .setOperationThreaded(false)
-		        .execute()
-		        .actionGet();
-		if (response.isExists()) {
-			Map<String, Object> source = response.getSource();
-			return getUserDataFromESSource(source);
-		} else {
-			return null;
+		GetResponse response = null;
+		try {
+			response = client.prepareGet(HTTP_USER_AUTH_INDEX, HTTP_USER_AUTH_TYPE, userName)
+			        .setOperationThreaded(false)
+			        .execute()
+			        .get();
+		} catch (InterruptedException | ExecutionException e) {
+			Loggers.getLogger(getClass()).error("InterruptedException | ExecutionException", e);
 		}
+		if (response != null && response.isExists()) {
+			return getUserDataFromESSource(response.getSource());
+		}
+		
+		return null;
 	}
 
 	public boolean deleteUser(String userName) {
-		DeleteResponse response = client.prepareDelete(HTTP_USER_AUTH_INDEX, HTTP_USER_AUTH_TYPE, userName)
-		        .execute()
-		        .actionGet();
-		if (response.isFound()) {
+		DeleteResponse response = null;
+		try {
+			response = client.prepareDelete(HTTP_USER_AUTH_INDEX, HTTP_USER_AUTH_TYPE, userName)
+					.setRefresh(true)
+			        .execute()
+			        .get();
+		} catch (InterruptedException | ExecutionException e) {
+			Loggers.getLogger(getClass()).error("InterruptedException | ExecutionException", e);
+		}
+		if (response != null && response.isFound()) {
 			reloadUserDataCache();
 			return true;
-		} else {
-			return false;
 		}
+		
+		return false;
 	}
 	
 	private boolean createIndexIfEmpty() {
@@ -306,7 +318,7 @@ public class UserDataBridge {
 			        .setQuery(QueryBuilders.matchAllQuery())
 					.setSize(100)
 					.execute()
-					.actionGet();
+					.get();
 			if (res.getFailedShards() == 0 && res.getHits() != null && res.getHits().hits() != null) {
 				List<UserData> userDataList = Lists.newCopyOnWriteArrayList();
 				SearchHit[] hits = res.getHits().hits();
@@ -319,6 +331,8 @@ public class UserDataBridge {
 				Loggers.getLogger(getClass()).error("Failed to get data from some shards");
 				return null;
 			}
+		} catch (InterruptedException | ExecutionException e) {
+			Loggers.getLogger(getClass()).error("InterruptedException | ExecutionException", e);
 		} catch (Exception ex) {
 			// possibly the ES's loading process hasn't finished yet 
 			Loggers.getLogger(getClass()).error("failed to load all user info", ex);
