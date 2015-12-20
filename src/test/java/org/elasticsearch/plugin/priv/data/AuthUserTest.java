@@ -2,8 +2,6 @@ package org.elasticsearch.plugin.priv.data;
 
 import static org.junit.Assert.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,14 +14,6 @@ public class AuthUserTest {
 
 	@Test
 	public void authTest() {
-        SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-		try {
-			System.out.println(sdf.parse("2015-09-06T03:06:36.458+09:00"));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		UserAuthenticator.setRootPassword("");
 		UserAuthenticator.reloadUserDataCache(null);
 		UserAuthenticator userAuth ;
