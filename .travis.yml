@@ -7,6 +7,9 @@ deploy:
   api_key:
     secure: VOynM4wce3GYVI2ZFtOeo5/T9qGmt6VyaNKvxYo6WgJCBh82yBEiD4RKeDovMdJ71mk1aIedrXND2HE4bxZ7xc90A5pOg5vpLLbl/2JXve1pSX0369jo9X7cAAi6nyBlX88zrTlt/TvHkHKGg8HuFF72jOcf0ZSnACMcwEv5bSNuxiudfIpvupWM8eUyhE+3y8VJ+pjwVHkv9LaAMI3qd1oglK/Ziim/hssfjKMMwkRmkCONO6UenApdw0GmMX46zzkibp1VvnpaV1UTgA5J73m8vg2sDMBxt3MABoX25otBglqzIJIw0RII694vyUglHzG9S8NfrKWxiHNfIe/dpGP8fLNZJTfSTtwafWpBxb3pkIrRxZPbJOT3BV8R5Jv3teS9GbGCdzt9sIlYDo9lc9sxgkvsZUlRuUx2e9cHyo51Yk7eJ7R+gWe6tixv+RqbMjhQPRCJmkGiNMjVfLRJ4E+dGLTad3dfT4+xxkF4sfwTtze5AaglTNNrkHoHUNpDVvaoXZb+IqNI6lwpqy79RD47WkEtIucWvFvy4gmj1aePPnYzdh1HHWPwOie5Q1eXI91wNRKuENANexFoCHlLzcM+6Ji7VF2j1cVCrNyHxghh/94m9KxXqa4NuJvj38bpBHzJ+EHMLhqU32zgawH0lIxebMhXScmvs+XMoWgkYdg=
   file: jar/http-user-auth-plugin-2.0-SNAPSHOT.zip
+  skip_cleanup: true
   on:
+    tags: true
+    all_branches: true
     repo: elasticfence/elasticsearch-http-user-auth
     branch: '2.0'
