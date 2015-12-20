@@ -50,6 +50,7 @@
     
     <properties>
         <elasticsearch.version>2.0.0</elasticsearch.version>
+        <elasticsearch.plugin.name>elasticfence</elasticsearch.plugin.name>
         <elasticsearch.plugin.site>true</elasticsearch.plugin.site>
         <elasticsearch.plugin.jvm>true</elasticsearch.plugin.jvm>
         <elasticsearch.plugin.classname>org.elasticsearch.plugin.http.user.auth.HttpUserAuthPlugin</elasticsearch.plugin.classname>
@@ -76,6 +77,11 @@
 	    <scope>provided</scope>
       	    <optional>true</optional> 
         </dependency>
+        <dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+		</dependency>
     </dependencies>
 
     <build>
