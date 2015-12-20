@@ -1,4 +1,4 @@
-package elasticsearch.plugin.priv.data;
+package org.elasticsearch.plugin.priv.data;
 
 import static org.junit.Assert.*;
 

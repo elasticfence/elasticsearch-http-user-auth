@@ -1,4 +1,4 @@
-package elasticsearch.plugin.priv.data;
+package org.elasticsearch.plugin.priv.data;
 
 import org.elasticsearch.plugin.http.user.auth.data.UserData;
 import org.junit.Test;
