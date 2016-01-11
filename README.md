@@ -2,19 +2,19 @@
 
 ![](http://i.imgur.com/OFFgrm8.png?1)
 # ElasticFence
-### Elasticsearch 2.x HTTP Basic User Auth and IP ACL plugin
+### Elasticsearch 2.1.1 HTTP Basic User Auth and IP ACL plugin
 
 ElasticFence extends the built-in high performance HTTP server embedded in Elasticsearch to provide HTTP basic authentication and IP access-control whitelists/blacklists. The plugin also provides an embedded [_site](#user-management-api) for user authentication APIs and a User management web console. 
 
 ## Installation 
 <pre>
-bin/plugin install https://cdn.rawgit.com/elasticfence/elasticsearch-http-user-auth/2.0/jar/http-user-auth-plugin-2.0-SNAPSHOT.zip
+bin/plugin install https://cdn.rawgit.com/elasticfence/elasticsearch-http-user-auth/2.1/jar/http-user-auth-plugin-2.1-SNAPSHOT.zip
 </pre>
 
 #### Build with Maven
 <pre>
 mvn package clean
-bin/plugin install file:///path/to/repo/jar/http-user-auth-plugin-2.0-SNAPSHOT.zip
+bin/plugin install file:///path/to/repo/jar/http-user-auth-plugin-2.1-SNAPSHOT.zip
 </pre>
 
 ## Configuration
