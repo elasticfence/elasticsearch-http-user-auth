@@ -1,20 +1,27 @@
 ![](https://travis-ci.org/elasticfence/elasticsearch-http-user-auth.svg)
 
 ![](http://i.imgur.com/OFFgrm8.png?1)
-# ElasticFence
-### Elasticsearch 2.x HTTP Basic User Auth and IP ACL plugin
 
-ElasticFence extends the built-in high performance HTTP server embedded in Elasticsearch to provide HTTP basic authentication and IP access-control whitelists/blacklists. The plugin also provides an embedded _site for user authentication APIs and a User management web console. 
+# Elasticsearch HTTP Basic User Auth plugin
+
+Elasticsearch user authentication plugin with http basic auth and IP ACL
+
+This plugin provides user authentication APIs and a User management web console. 
+
+| Version        | Release           | Branch  |
+| ------------- |:-------------:| -----:|
+| Elasticsearch 1.x | 1.0-SNAPSHOT | [master](https://github.com/elasticfence/elasticsearch-http-user-auth/tree/master) |
+| Elasticsearch 2.x | 2.0-SNAPSHOT | [2.0](https://github.com/elasticfence/elasticsearch-http-user-auth/tree/2.0) |
 
 ## Installation 
 <pre>
-bin/plugin install https://cdn.rawgit.com/elasticfence/elasticsearch-http-user-auth/2.0/jar/http-user-auth-plugin-2.0-SNAPSHOT.zip
+bin/plugin --url https://raw.githubusercontent.com/elasticfence/elasticsearch-http-user-auth/master/jar/http-user-auth-plugin-1.0-SNAPSHOT.jar --install http-user-auth-plugin
 </pre>
 
 #### Build with Maven
 <pre>
 mvn package clean
-bin/plugin install file:///path/to/repo/jar/http-user-auth-plugin-2.0-SNAPSHOT.zip
+bin/plugin --url file:///path/to/repo/jar/http-user-auth-plugin-1.0-SNAPSHOT.zip --install http-user-auth-plugin
 </pre>
 
 ## Configuration
@@ -32,10 +39,10 @@ To set the root password on each start use `http.user.auth.root.password`
 Other users can access URLs under their own indices that are specified with this plugin's API.  
 
 ### Basic IP ACL
-IPs contained in whitelist/blacklist arrays will bypass authentication. By default 127.0.0.1 is allowed.
+IPs contained in whitelist/blacklist arrays will bypass authentication
 <pre>
 http.user.auth.whitelist: ["127.0.0.1", "10.0.0.1"]
-http.user.auth.blacklist: ["127.0.0.2", "10.0.0.100"]
+http.user.auth.blacklist: ["127.0.0.2", "10.0.0.99"]
 </pre>
 
 ## Add username and password on HTTP requests
