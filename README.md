@@ -2,7 +2,7 @@
 
 ![](http://i.imgur.com/OFFgrm8.png?1)
 
-# Elasticsearch HTTP Basic User Auth plugin
+# Elasticfence - Elasticsearch HTTP Basic User Auth plugin
 
 Elasticsearch user authentication plugin with http basic auth and IP ACL
 
@@ -15,20 +15,20 @@ This plugin provides user authentication APIs and a User management web console.
 
 ## Installation 
 <pre>
-bin/plugin --url https://raw.githubusercontent.com/elasticfence/elasticsearch-http-user-auth/master/jar/http-user-auth-plugin-1.0-SNAPSHOT.jar --install http-user-auth-plugin
+bin/plugin --url https://raw.githubusercontent.com/elasticfence/elasticsearch-http-user-auth/master/jar/http-user-auth-plugin-1.0-SNAPSHOT.jar --install elasticfence
 </pre>
 
 #### Build with Maven
 <pre>
 mvn package clean
-bin/plugin --url file:///path/to/repo/jar/http-user-auth-plugin-1.0-SNAPSHOT.zip --install http-user-auth-plugin
+bin/plugin --url file:///path/to/repo/jar/http-user-auth-plugin-1.0-SNAPSHOT.zip --install elasticfence
 </pre>
 
 ## Configuration
 Add following lines to elasticsearch.yml:
 <pre>
-http.user.auth.disabled: false
-http.user.auth.root.password: rootpassword
+elasticfence.disabled: false
+elasticfence.root.password: rootpassword
 </pre>
 
 To disable the plugin set `http.user.auth.disabled` to `true`  
@@ -41,8 +41,8 @@ Other users can access URLs under their own indices that are specified with this
 ### Basic IP ACL
 IPs contained in whitelist/blacklist arrays will bypass authentication
 <pre>
-http.user.auth.whitelist: ["127.0.0.1", "10.0.0.1"]
-http.user.auth.blacklist: ["127.0.0.2", "10.0.0.99"]
+elasticfence.whitelist: ["127.0.0.1", "10.0.0.1"]
+elasticfence.blacklist: ["127.0.0.2", "10.0.0.99"]
 </pre>
 
 ## Add username and password on HTTP requests
