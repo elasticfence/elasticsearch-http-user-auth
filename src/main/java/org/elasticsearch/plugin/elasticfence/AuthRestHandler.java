@@ -1,4 +1,4 @@
-package org.elasticsearch.plugin.http.user.auth;
+package org.elasticsearch.plugin.elasticfence;
 
 import org.elasticsearch.rest.*;
 
@@ -6,7 +6,7 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.plugin.http.user.auth.data.UserDataBridge;
+import org.elasticsearch.plugin.elasticfence.data.UserDataBridge;
 
 import static org.elasticsearch.rest.RestRequest.Method.GET;
 import static org.elasticsearch.rest.RestStatus.OK;

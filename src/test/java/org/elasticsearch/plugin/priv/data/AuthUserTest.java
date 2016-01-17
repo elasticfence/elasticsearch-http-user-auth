@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.elasticsearch.plugin.http.user.auth.UserAuthenticator;
-import org.elasticsearch.plugin.http.user.auth.data.UserData;
+import org.elasticsearch.plugin.elasticfence.UserAuthenticator;
+import org.elasticsearch.plugin.elasticfence.data.UserData;
 import org.junit.Test;
 
 

@@ -1,4 +1,4 @@
-package org.elasticsearch.plugin.http.user.auth;
+package org.elasticsearch.plugin.elasticfence;
 
 import org.elasticsearch.common.inject.AbstractModule;
 

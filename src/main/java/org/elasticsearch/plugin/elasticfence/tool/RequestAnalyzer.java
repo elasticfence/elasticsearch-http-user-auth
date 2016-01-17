@@ -1,4 +1,4 @@
-package org.elasticsearch.plugin.http.user.auth.tool;
+package org.elasticsearch.plugin.elasticfence.tool;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

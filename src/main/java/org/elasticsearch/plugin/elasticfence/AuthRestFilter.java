@@ -1,4 +1,4 @@
-package org.elasticsearch.plugin.http.user.auth;
+package org.elasticsearch.plugin.elasticfence;
 
 import static org.elasticsearch.rest.RestStatus.SERVICE_UNAVAILABLE;
 
@@ -8,8 +8,8 @@ import java.net.InetSocketAddress;
 import org.elasticsearch.client.Client;
 import com.google.common.collect.Sets;
 import org.elasticsearch.common.logging.Loggers;
-import org.elasticsearch.plugin.http.user.auth.data.UserDataBridge;
-import org.elasticsearch.plugin.http.user.auth.tool.RequestAnalyzer;
+import org.elasticsearch.plugin.elasticfence.data.UserDataBridge;
+import org.elasticsearch.plugin.elasticfence.tool.RequestAnalyzer;
 import org.elasticsearch.rest.BytesRestResponse;
 import org.elasticsearch.rest.RestChannel;
 import org.elasticsearch.rest.RestFilter;

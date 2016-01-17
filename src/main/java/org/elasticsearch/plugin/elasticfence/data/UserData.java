@@ -1,4 +1,4 @@
-package org.elasticsearch.plugin.http.user.auth.data;
+package org.elasticsearch.plugin.elasticfence.data;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 

@@ -1,4 +1,4 @@
-package org.elasticsearch.plugin.http.user.auth;
+package org.elasticsearch.plugin.elasticfence;
 
 import java.net.URI;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 import com.google.common.collect.Maps;
 import org.elasticsearch.common.logging.ESLoggerFactory;
-import org.elasticsearch.plugin.http.user.auth.data.UserData;
+import org.elasticsearch.plugin.elasticfence.data.UserData;
 
 /**
  * A class for checking an index path is accessible by a user. 
