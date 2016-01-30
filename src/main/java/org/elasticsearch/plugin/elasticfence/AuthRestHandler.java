@@ -4,9 +4,9 @@ import org.elasticsearch.rest.*;
 
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.inject.Inject;
-import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.plugin.elasticfence.data.UserDataBridge;
+import org.elasticsearch.plugin.elasticfence.logger.ElasticfenceLogger;
 
 import static org.elasticsearch.rest.RestRequest.Method.GET;
 import static org.elasticsearch.rest.RestStatus.OK;
@@ -40,7 +40,7 @@ public class AuthRestHandler extends BaseRestHandler {
 		        String userListJSON = userDataBridge.listUser();
 		        channel.sendResponse(new BytesRestResponse(OK, userListJSON));
 	        } catch (Exception ex) {
-				Loggers.getLogger(getClass()).error("failed to create index: ", ex);
+				ElasticfenceLogger.error("failed to create index: ", ex);
 		        channel.sendResponse(new BytesRestResponse(OK, "failed to list all users"));
 	        }
 	        return ;
@@ -57,7 +57,7 @@ public class AuthRestHandler extends BaseRestHandler {
 		        }
 		        return ;
 	        } catch (Exception ex) {
-				Loggers.getLogger(getClass()).error("failed to create index: ", ex);
+				ElasticfenceLogger.error("failed to create index: ", ex);
 		        channel.sendResponse(new BytesRestResponse(OK, "failed to create index : " + userName));
 		        return ;
 	        }
@@ -74,7 +74,7 @@ public class AuthRestHandler extends BaseRestHandler {
 		        	channel.sendResponse(new BytesRestResponse(OK, "failed to add auth index: " + userName));
 		        }
 	        } catch (Exception ex) {
-				Loggers.getLogger(getClass()).error("failed to add auth index: ", ex);
+				ElasticfenceLogger.error("failed to add auth index: ", ex);
 		        channel.sendResponse(new BytesRestResponse(OK, "failed to add auth index : " + userName));
 		        return ;
 	        }
@@ -93,7 +93,7 @@ public class AuthRestHandler extends BaseRestHandler {
 		        	channel.sendResponse(new BytesRestResponse(OK, "failed to add auth index: " + userName));
 		        }
 	        } catch (Exception ex) {
-				Loggers.getLogger(getClass()).error("failed to add auth index: ", ex);
+				ElasticfenceLogger.error("failed to add auth index: ", ex);
 		        channel.sendResponse(new BytesRestResponse(OK, "failed to add auth index : " + userName));
 		        return ;
 	        }
