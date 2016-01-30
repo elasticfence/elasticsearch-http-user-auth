@@ -8,6 +8,7 @@ import java.net.InetSocketAddress;
 import org.elasticsearch.client.Client;
 import com.google.common.collect.Sets;
 import org.elasticsearch.common.logging.Loggers;
+import org.elasticsearch.index.IndexNotFoundException;
 import org.elasticsearch.plugin.elasticfence.data.UserDataBridge;
 import org.elasticsearch.plugin.elasticfence.tool.RequestAnalyzer;
 import org.elasticsearch.rest.BytesRestResponse;
@@ -79,7 +80,11 @@ public class AuthRestFilter extends RestFilter {
 			    	}
 				}
 				if (passAll) {
-					filterChain.continueProcessing(request, channel);
+					try {
+						filterChain.continueProcessing(request, channel);
+					} catch (IndexNotFoundException infe) {
+						Loggers.getLogger(getClass()).debug("index not found: " + pathStr);
+					}
 			    	return ;
 				} else {
 					// forbidden path 
