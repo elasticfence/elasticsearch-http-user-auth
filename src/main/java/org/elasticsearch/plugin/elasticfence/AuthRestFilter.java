@@ -7,9 +7,10 @@ import java.net.InetSocketAddress;
 
 import org.elasticsearch.client.Client;
 import com.google.common.collect.Sets;
-import org.elasticsearch.common.logging.Loggers;
+
 import org.elasticsearch.index.IndexNotFoundException;
 import org.elasticsearch.plugin.elasticfence.data.UserDataBridge;
+import org.elasticsearch.plugin.elasticfence.logger.ElasticfenceLogger;
 import org.elasticsearch.plugin.elasticfence.tool.RequestAnalyzer;
 import org.elasticsearch.rest.BytesRestResponse;
 import org.elasticsearch.rest.RestChannel;
@@ -37,18 +38,18 @@ public class AuthRestFilter extends RestFilter {
 			
 			// IP Check
 			String ipaddr = ((InetSocketAddress) request.getRemoteAddress()).getAddress().getHostAddress();
-	            	// Loggers.getLogger(getClass()).error("Request from IP: " + ipaddr);
+            	// Loggers.getLogger(getClass()).error("Request from IP: " + ipaddr);
 
 			IPAuthenticator ipAuthenticator = new IPAuthenticator();
 			if ( ipAuthenticator.isWhitelisted(ipaddr) ) {
-		             	// Loggers.getLogger(getClass()).error("Request from IP is whitelisted: " + ipaddr);
-					filterChain.continueProcessing(request, channel);
-					return;
+             	// Loggers.getLogger(getClass()).error("Request from IP is whitelisted: " + ipaddr);
+				filterChain.continueProcessing(request, channel);
+				return;
 			} else if ( ipAuthenticator.isBlacklisted(ipaddr) ) {
-		             	Loggers.getLogger(getClass()).error("Request from IP is blacklisted: " + ipaddr);
-					BytesRestResponse resp = new BytesRestResponse(RestStatus.FORBIDDEN, "Forbidden IP");
+				ElasticfenceLogger.error("Request from IP is blacklisted: " + ipaddr);
+				BytesRestResponse resp = new BytesRestResponse(RestStatus.FORBIDDEN, "Forbidden IP");
 			        	channel.sendResponse(resp);
-					return;
+				return;
 			}
 
 			// auth check
@@ -59,7 +60,7 @@ public class AuthRestFilter extends RestFilter {
 				BytesRestResponse resp = new BytesRestResponse(RestStatus.UNAUTHORIZED, "Needs Basic Auth");
 				resp.addHeader("WWW-Authenticate", "Basic realm=\"Http User Auth Plugin\"");
 		        channel.sendResponse(resp);
-	            Loggers.getLogger(getClass()).error("auth failed: " + request.path());
+		        ElasticfenceLogger.info("auth failed: " + request.path());
 				return ;
 			}
 			
@@ -83,7 +84,7 @@ public class AuthRestFilter extends RestFilter {
 					try {
 						filterChain.continueProcessing(request, channel);
 					} catch (IndexNotFoundException infe) {
-						Loggers.getLogger(getClass()).debug("index not found: " + pathStr);
+						ElasticfenceLogger.debug("index not found: " + pathStr);
 					}
 			    	return ;
 				} else {
@@ -96,11 +97,11 @@ public class AuthRestFilter extends RestFilter {
 				BytesRestResponse resp = new BytesRestResponse(RestStatus.UNAUTHORIZED, "Needs Basic Auth");
 				resp.addHeader("WWW-Authenticate", "Basic realm=\"Http User Auth Plugin\"");
 		        channel.sendResponse(resp);
-	            Loggers.getLogger(getClass()).error("Invalid User: " + request.path());
+		        ElasticfenceLogger.info("Invalid User: " + request.path());
 			}
 		} catch (Exception ex) {
 	        channel.sendResponse(new BytesRestResponse(RestStatus.INTERNAL_SERVER_ERROR, ""));
-            Loggers.getLogger(getClass()).error("", ex);
+	        ElasticfenceLogger.error("", ex);
 		}
         return ;
 	}
