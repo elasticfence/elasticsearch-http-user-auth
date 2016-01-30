@@ -19,9 +19,9 @@ import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.plugin.elasticfence.UserAuthenticator;
+import org.elasticsearch.plugin.elasticfence.logger.ElasticfenceLogger;
 import org.elasticsearch.search.SearchHit;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.*;
@@ -38,7 +38,7 @@ public class UserDataBridge {
 	public UserDataBridge(Client client) {
 		this.client = client;
 		if (!createIndexIfEmpty()) {
-			Loggers.getLogger(getClass()).error("failed to create index: " + HTTP_USER_AUTH_INDEX);
+			ElasticfenceLogger.error("failed to create index: " + HTTP_USER_AUTH_INDEX);
 		}
 	}
 	
@@ -76,7 +76,7 @@ public class UserDataBridge {
 		
 		UserData user = getUser(userName);
 		if (user != null) {
-			Loggers.getLogger(getClass()).error("username " + userName + " is already registered");
+			ElasticfenceLogger.error("username " + userName + " is already registered");
 			return false;
 		} else {
 			user = new UserData(userName, password);
@@ -234,11 +234,11 @@ public class UserDataBridge {
 			reloadUserDataCache();
 			return true;
 		} catch (InterruptedException | ExecutionException e) {
-			Loggers.getLogger(getClass()).error("InterruptedException | ExecutionException", e);
+			ElasticfenceLogger.error("InterruptedException | ExecutionException", e);
 		} catch (ElasticsearchException e) {
-			Loggers.getLogger(getClass()).error("ElasticsearchException", e);
+			ElasticfenceLogger.error("ElasticsearchException", e);
 		} catch (IOException e) {
-			Loggers.getLogger(getClass()).error("IOException", e);
+			ElasticfenceLogger.error("IOException", e);
 		}
 		return false;
 	}
@@ -251,7 +251,7 @@ public class UserDataBridge {
 			        .execute()
 			        .get();
 		} catch (InterruptedException | ExecutionException e) {
-			Loggers.getLogger(getClass()).error("InterruptedException | ExecutionException", e);
+			ElasticfenceLogger.error("InterruptedException | ExecutionException", e);
 		}
 		if (response != null && response.isExists()) {
 			return getUserDataFromESSource(response.getSource());
@@ -268,7 +268,7 @@ public class UserDataBridge {
 			        .execute()
 			        .get();
 		} catch (InterruptedException | ExecutionException e) {
-			Loggers.getLogger(getClass()).error("InterruptedException | ExecutionException", e);
+			ElasticfenceLogger.error("InterruptedException | ExecutionException", e);
 		}
 		if (response != null && response.isFound()) {
 			reloadUserDataCache();
@@ -328,14 +328,14 @@ public class UserDataBridge {
 				}
 				return userDataList;
 			} else {
-				Loggers.getLogger(getClass()).error("Failed to get data from some shards");
+				ElasticfenceLogger.error("Failed to get data from some shards");
 				return null;
 			}
 		} catch (InterruptedException | ExecutionException e) {
-			Loggers.getLogger(getClass()).error("InterruptedException | ExecutionException", e);
+			ElasticfenceLogger.error("InterruptedException | ExecutionException", e);
 		} catch (Exception ex) {
 			// possibly the ES's loading process hasn't finished yet 
-			Loggers.getLogger(getClass()).error("failed to load all user info", ex);
+			ElasticfenceLogger.error("failed to load all user info", ex);
 		}
 		return null;
 	}
