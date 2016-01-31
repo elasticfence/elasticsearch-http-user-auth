@@ -10,7 +10,7 @@ import com.google.common.collect.Sets;
 
 import org.elasticsearch.index.IndexNotFoundException;
 import org.elasticsearch.plugin.elasticfence.data.UserDataBridge;
-import org.elasticsearch.plugin.elasticfence.logger.ElasticfenceLogger;
+import org.elasticsearch.plugin.elasticfence.logger.EFLogger;
 import org.elasticsearch.plugin.elasticfence.tool.RequestAnalyzer;
 import org.elasticsearch.rest.BytesRestResponse;
 import org.elasticsearch.rest.RestChannel;
@@ -46,7 +46,7 @@ public class AuthRestFilter extends RestFilter {
 				filterChain.continueProcessing(request, channel);
 				return;
 			} else if ( ipAuthenticator.isBlacklisted(ipaddr) ) {
-				ElasticfenceLogger.error("Request from IP is blacklisted: " + ipaddr);
+				EFLogger.error("Request from IP is blacklisted: " + ipaddr);
 				BytesRestResponse resp = new BytesRestResponse(RestStatus.FORBIDDEN, "Forbidden IP");
 			        	channel.sendResponse(resp);
 				return;
@@ -60,7 +60,7 @@ public class AuthRestFilter extends RestFilter {
 				BytesRestResponse resp = new BytesRestResponse(RestStatus.UNAUTHORIZED, "Needs Basic Auth");
 				resp.addHeader("WWW-Authenticate", "Basic realm=\"Http User Auth Plugin\"");
 		        channel.sendResponse(resp);
-		        ElasticfenceLogger.info("auth failed: " + request.path());
+		        EFLogger.info("auth failed: " + request.path());
 				return ;
 			}
 			
@@ -84,7 +84,7 @@ public class AuthRestFilter extends RestFilter {
 					try {
 						filterChain.continueProcessing(request, channel);
 					} catch (IndexNotFoundException infe) {
-						ElasticfenceLogger.debug("index not found: " + pathStr);
+						EFLogger.debug("index not found: " + pathStr);
 					}
 			    	return ;
 				} else {
@@ -97,11 +97,11 @@ public class AuthRestFilter extends RestFilter {
 				BytesRestResponse resp = new BytesRestResponse(RestStatus.UNAUTHORIZED, "Needs Basic Auth");
 				resp.addHeader("WWW-Authenticate", "Basic realm=\"Http User Auth Plugin\"");
 		        channel.sendResponse(resp);
-		        ElasticfenceLogger.info("Invalid User: " + request.path());
+		        EFLogger.info("Invalid User: " + request.path());
 			}
 		} catch (Exception ex) {
 	        channel.sendResponse(new BytesRestResponse(RestStatus.INTERNAL_SERVER_ERROR, ""));
-	        ElasticfenceLogger.error("", ex);
+	        EFLogger.error("", ex);
 		}
         return ;
 	}
