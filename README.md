@@ -1,27 +1,20 @@
 ![](https://travis-ci.org/elasticfence/elasticsearch-http-user-auth.svg)
 
 ![](http://i.imgur.com/OFFgrm8.png?1)
+# ElasticFence
+### Elasticsearch 2.1.1 HTTP Basic User Auth and IP ACL plugin
 
-# Elasticfence - Elasticsearch HTTP Basic User Auth plugin
-
-Elasticsearch user authentication plugin with http basic auth and IP ACL
-
-This plugin provides user authentication APIs and a User management web console. 
-
-| Version        | Release           | Branch  |
-| ------------- |:-------------:| -----:|
-| Elasticsearch 1.x | 1.0-SNAPSHOT | [master](https://github.com/elasticfence/elasticsearch-http-user-auth/tree/master) |
-| Elasticsearch 2.x | 2.0-SNAPSHOT | [2.0](https://github.com/elasticfence/elasticsearch-http-user-auth/tree/2.0) |
+ElasticFence extends the built-in high performance HTTP server embedded in Elasticsearch to provide HTTP basic authentication and IP access-control whitelists/blacklists. The plugin also provides an embedded [_site](#user-management-api) for user authentication APIs and a User management web console. 
 
 ## Installation 
 <pre>
-bin/plugin --url https://raw.githubusercontent.com/elasticfence/elasticsearch-http-user-auth/master/jar/http-user-auth-plugin-1.0-SNAPSHOT.jar --install elasticfence
+bin/plugin install https://cdn.rawgit.com/elasticfence/elasticsearch-http-user-auth/2.1/jar/http-user-auth-plugin-2.1-SNAPSHOT.zip
 </pre>
 
 #### Build with Maven
 <pre>
 mvn package clean
-bin/plugin --url file:///path/to/repo/jar/http-user-auth-plugin-1.0-SNAPSHOT.zip --install elasticfence
+bin/plugin install file:///path/to/repo/jar/http-user-auth-plugin-2.1-SNAPSHOT.zip
 </pre>
 
 ## Configuration
@@ -39,10 +32,10 @@ To set the root password on each start use `http.user.auth.root.password`
 Other users can access URLs under their own indices that are specified with this plugin's API.  
 
 ### Basic IP ACL
-IPs contained in whitelist/blacklist arrays will bypass authentication
+IPs contained in whitelist/blacklist arrays will bypass authentication. By default 127.0.0.1 is allowed.
 <pre>
 elasticfence.whitelist: ["127.0.0.1", "10.0.0.1"]
-elasticfence.blacklist: ["127.0.0.2", "10.0.0.99"]
+elasticfence.blacklist: ["127.0.0.2", "10.0.0.100"]
 </pre>
 
 ## Add username and password on HTTP requests

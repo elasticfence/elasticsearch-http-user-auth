@@ -180,8 +180,6 @@ public class UserAuthenticator {
 	 * Ex1: "/test_index/test_type/../../*" => "/*" 
 	 * Ex2: "/test_index/test_type/../../../" => "/" 
 	 * 
-	 * 最初のスラッシュは削られる
-	 * ESのインデックスパスにはスラッシュが必ず含まれるのに…
 	 * @param path
 	 * @return
 	 */
