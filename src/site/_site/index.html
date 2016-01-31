@@ -40,21 +40,21 @@
 	    		return ;
 	    	}
 	    	
-// 			var url = "/_httpuserauth?mode=adduser&username=" + $('#inputUsername').val() + "&password=" + $('#inputPassword').val();
+// 			var url = "/_elasticfence?mode=adduser&username=" + $('#inputUsername').val() + "&password=" + $('#inputPassword').val();
 // 			$.get(url, function(data, status){
 // 				// add index 
-// 				var url = "/_httpuserauth?mode=addindex&username=" + $('#inputUsername').val() + "&password=" + $('#inputPassword').val();
+// 				var url = "/_elasticfence?mode=addindex&username=" + $('#inputUsername').val() + "&password=" + $('#inputPassword').val();
 // 				$.get(url + "&index=" + $('#inputIndices').val(), function(data, status){
 // 		    		alert("User added");
 // 		    		location.reload();
 // 				});
 // 			});
 			
-			var url = "/_httpuserauth?mode=adduser&username=" + $('#inputUsername').val() + "&password=" + $('#inputPassword').val();
+			var url = "/_elasticfence?mode=adduser&username=" + $('#inputUsername').val() + "&password=" + $('#inputPassword').val();
 			$.ajax({
 			    url: url, 
 			    success: function(data, status, xhr) {
-					var url = "/_httpuserauth?mode=addindex&username=" + $('#inputUsername').val() + "&password=" + $('#inputPassword').val() + "&index=" + $('#inputIndices').val();
+					var url = "/_elasticfence?mode=addindex&username=" + $('#inputUsername').val() + "&password=" + $('#inputPassword').val() + "&index=" + $('#inputIndices').val();
 					$.ajax({
 					    url: url, 
 					    success: function(data, status, xhr) {
@@ -83,7 +83,7 @@
 			delay = 0;
 		}
 	    setTimeout(function(){
-			$.getJSON( "/_httpuserauth?mode=list", function( data ) {
+			$.getJSON( "/_elasticfence?mode=list", function( data ) {
 				var innerhtml = "";
 				for  (var i = 0; i < data.length; i++) {
 					var index_td_id = 'index_' + i;
@@ -111,7 +111,7 @@
 			$("#" + element_id).removeAttr("disabled");
 		} else {
 			// update indices
-			var url = "/_httpuserauth?mode=updateindex&username=" + username + "&index=" + $("#" + element_id).val();
+			var url = "/_elasticfence?mode=updateindex&username=" + username + "&index=" + $("#" + element_id).val();
 			$.ajax({
 			    url: url, 
 			    success: function(data, status, xhr) {
@@ -133,7 +133,7 @@
 		if (!confirm("Are you sure to delete?")) {
 			return false;
 		}
-		var url = "/_httpuserauth?mode=deleteuser&username=" + username;
+		var url = "/_elasticfence?mode=deleteuser&username=" + username;
 		$.ajax({
 		    url: url, 
 		    success: function(data, status, xhr) {
@@ -199,7 +199,7 @@
           <div class="row placeholders">
 			<form name="addUser" id="addUser" class="form-horizontal" style="float:left; width:400px;">
 			  <div class="form-group">
-			    <label for="inputUsername" class="col-sm-2 control-label">Email</label>
+			    <label for="inputUsername" class="col-sm-2 control-label">User Name</label>
 			    <div class="col-sm-10">
 			      <input type="text" class="form-control" id="inputUsername" placeholder="Username">
 			    </div>
@@ -229,7 +229,7 @@
 			  </div>
 			</form>
           </div>
-
+          
           <h2 class="sub-header">User List</h2>
           <div class="table-responsive">
             <table class="table table-striped">
