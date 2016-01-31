@@ -64,7 +64,7 @@ public class UserDataBridge {
 		response += "]";
 		return response;
 	}
-	
+
 	public boolean createUser (String userName, String password) {
 		if (userName == null || userName.equals("")) {
 			return false;
@@ -83,6 +83,29 @@ public class UserDataBridge {
 			putUser(user);
 			return true;
 		}
+	}
+	
+	/**
+	 * This function is used to import user data from JSON files
+	 * @param userName
+	 * @param encPassword
+	 * @param indices
+	 * @return
+	 */
+	public boolean importUser(String userName, String encPassword, List<String> indices) {
+		if (userName == null || userName.equals("")) {
+			return false;
+		}
+		if (userName.toLowerCase().equals("root")) {
+			return false;
+		}
+		if (getUser(userName) != null) {
+			ElasticfenceLogger.error("username " + userName + " is already registered");
+			return false;
+		}
+		
+       UserData userData = UserData.restoreFromESData(userName, encPassword, indices.toArray(new String[0]));
+       return putUser(userData);
 	}
 	
 	/**
@@ -209,6 +232,24 @@ public class UserDataBridge {
 		return false;
 	}
 	
+	public boolean deleteUser(String userName) {
+		DeleteResponse response = null;
+		try {
+			response = client.prepareDelete(HTTP_USER_AUTH_INDEX, HTTP_USER_AUTH_TYPE, userName)
+					.setRefresh(true)
+			        .execute()
+			        .get();
+		} catch (InterruptedException | ExecutionException e) {
+			ElasticfenceLogger.error("InterruptedException | ExecutionException", e);
+		}
+		if (response != null && response.isFound()) {
+			reloadUserDataCache();
+			return true;
+		}
+		
+		return false;
+	}
+	
 	private boolean putUser(UserData user) {
 		String created = "";
 		if (user.getCreated() == null) {
@@ -259,24 +300,6 @@ public class UserDataBridge {
 		
 		return null;
 	}
-
-	public boolean deleteUser(String userName) {
-		DeleteResponse response = null;
-		try {
-			response = client.prepareDelete(HTTP_USER_AUTH_INDEX, HTTP_USER_AUTH_TYPE, userName)
-					.setRefresh(true)
-			        .execute()
-			        .get();
-		} catch (InterruptedException | ExecutionException e) {
-			ElasticfenceLogger.error("InterruptedException | ExecutionException", e);
-		}
-		if (response != null && response.isFound()) {
-			reloadUserDataCache();
-			return true;
-		}
-		
-		return false;
-	}
 	
 	private boolean createIndexIfEmpty() {
 		IndicesExistsResponse res = client.admin().indices().prepareExists(HTTP_USER_AUTH_INDEX).execute().actionGet();
@@ -305,7 +328,7 @@ public class UserDataBridge {
 		UserAuthenticator.reloadUserDataCache(userDataList);
 		isInitialized = true;
 	}
-	
+
 	/**
 	 * get all user info
 	 */
@@ -316,7 +339,7 @@ public class UserDataBridge {
 					.setTypes(HTTP_USER_AUTH_TYPE)
 			        .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 			        .setQuery(QueryBuilders.matchAllQuery())
-					.setSize(100)
+					.setSize(1000)
 					.execute()
 					.get();
 			if (res.getFailedShards() == 0 && res.getHits() != null && res.getHits().hits() != null) {

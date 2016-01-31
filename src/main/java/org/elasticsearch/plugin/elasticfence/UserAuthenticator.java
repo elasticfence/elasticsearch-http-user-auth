@@ -81,14 +81,16 @@ public class UserAuthenticator {
 	 * @param userPassIndices List < Map <key, val>> 
 	 */
 	public static void reloadUserDataCache(List<UserData> userDataList) {
-		users  = Maps.newConcurrentMap();
+		Map<String, UserData> newUsers  = Maps.newConcurrentMap();
 		if (userDataList != null) {
 			for (UserData userData : userDataList) {
-				users.put(userData.getUsername(), userData);
+				newUsers.put(userData.getUsername(), userData);
 			}
 		}
 		// At last, add root user information
-		users.put("root", UserData.restoreFromESData("root", rootPassword, "/*"));
+		newUsers.put("root", UserData.restoreFromESData("root", rootPassword, "/*"));
+		// substitute newUsers to users 
+		users = newUsers;
 	}
 
 	public static void setRootPassword(String rootPassword) {
@@ -99,6 +101,10 @@ public class UserAuthenticator {
 	public static String getRootPassword() {
 		if (rootPassword == null) return "";
 		return rootPassword;
+	}
+	
+	public static boolean existsUser(String username) {
+		return users.containsKey(username);
 	}
 	
 	/**
