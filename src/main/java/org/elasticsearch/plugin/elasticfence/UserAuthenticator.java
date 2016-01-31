@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 import com.google.common.collect.Maps;
 import org.elasticsearch.plugin.elasticfence.data.UserData;
-import org.elasticsearch.plugin.elasticfence.logger.ElasticfenceLogger;
+import org.elasticsearch.plugin.elasticfence.logger.EFLogger;
 
 /**
  * A class for checking an index path is accessible by a user. 
@@ -72,7 +72,7 @@ public class UserAuthenticator {
 	 * @param userPassIndices List < Map <key, val>> 
 	 */
 	public static void loadRootUserDataCacheOnStart() {
-		ElasticfenceLogger.debug("loadRootUserDataCacheOnStart");
+		EFLogger.debug("loadRootUserDataCacheOnStart");
 		users.put("root", UserData.restoreFromESData("root", rootPassword, "/*"));
 	}
 	
@@ -174,8 +174,6 @@ public class UserAuthenticator {
 	 * Ex1: "/test_index/test_type/../../*" => "/*" 
 	 * Ex2: "/test_index/test_type/../../../" => "/" 
 	 * 
-	 * 最初のスラッシュは削られる
-	 * ESのインデックスパスにはスラッシュが必ず含まれるのに…
 	 * @param path
 	 * @return
 	 */
@@ -188,10 +186,10 @@ public class UserAuthenticator {
 			uri = uri.normalize();
 			path = uri.toString();
 		} catch (IllegalArgumentException ex) {
-			ElasticfenceLogger.error("Illegal path: " + path);
+			EFLogger.error("Illegal path: " + path);
 			return null;
 		} catch (Exception ex) {
-			ElasticfenceLogger.error("invalid path: " + path);
+			EFLogger.error("invalid path: " + path);
 			return null;
 		}
 		
