@@ -8,7 +8,7 @@ import org.elasticsearch.common.logging.ESLoggerFactory;
  * @author TomSearch
  *
  */
-public class ElasticfenceLogger {
+public class EFLogger {
 	private static ESLogger esLogger;
 	static {
 		esLogger = ESLoggerFactory.getLogger("plugin.elasticfence");
