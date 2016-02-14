@@ -2,15 +2,16 @@ package org.elasticsearch.plugin.elasticfence;
 
 import static org.elasticsearch.rest.RestStatus.SERVICE_UNAVAILABLE;
 
-import java.util.Set;
 import java.net.InetSocketAddress;
 
 import org.elasticsearch.client.Client;
-import com.google.common.collect.Sets;
+import org.elasticsearch.common.settings.Settings;
+
 
 import org.elasticsearch.index.IndexNotFoundException;
 import org.elasticsearch.plugin.elasticfence.data.UserDataBridge;
 import org.elasticsearch.plugin.elasticfence.logger.EFLogger;
+import org.elasticsearch.plugin.elasticfence.parser.RequestParser;
 import org.elasticsearch.plugin.elasticfence.tool.RequestAnalyzer;
 import org.elasticsearch.rest.BytesRestResponse;
 import org.elasticsearch.rest.RestChannel;
@@ -21,21 +22,14 @@ import org.elasticsearch.rest.RestStatus;
 
 public class AuthRestFilter extends RestFilter {
 	Client client;
-	public AuthRestFilter(Client client) {
-		this.client = client;
+	Settings settings;
+	public AuthRestFilter(Client client, Settings settings) {
+		this.settings = settings;
+		this.client   = client;
 	}
 	@Override
 	public void process(RestRequest request, RestChannel channel, RestFilterChain filterChain) throws Exception {
 		try {
-			// url check
-			String pathStr = request.path();
-			Set<String> paths = Sets.newConcurrentHashSet();
-			if (pathStr.contains(",")) {
-				paths = Sets.newHashSet(pathStr.split(","));
-			} else {
-				paths.add(pathStr);
-			}
-			
 			// IP Check
 			String ipaddr = ((InetSocketAddress) request.getRemoteAddress()).getAddress().getHostAddress();
             	// Loggers.getLogger(getClass()).error("Request from IP: " + ipaddr);
@@ -71,24 +65,25 @@ public class AuthRestFilter extends RestFilter {
 			        return ;
 		        }
 			}
-	        
+	        EFLogger.debug("request.path(): " + request.path());
+			// auth index
 			UserAuthenticator userAuth = new UserAuthenticator(username, password);
+			RequestParser parser = new RequestParser(request, settings);
 			if (userAuth.isValidUser()) {
-				boolean passAll = true;
-				for (String path : paths) {
-			    	if (!userAuth.execAuth(path)) {
-			    		passAll = false;
-			    	}
-				}
-				if (passAll) {
+				boolean isAccessible = false;
+				isAccessible = userAuth.isAccessibleIndices(parser);
+				if (isAccessible) {
 					try {
 						filterChain.continueProcessing(request, channel);
 					} catch (IndexNotFoundException infe) {
-						EFLogger.debug("index not found: " + pathStr);
+						EFLogger.debug("index not found: " + request.path());
+					} catch (Exception ex) {
+						EFLogger.error("exception occurred: " + request.path(), ex);
 					}
 			    	return ;
 				} else {
 					// forbidden path 
+					EFLogger.debug("forbidden path: " + request.path());
 					BytesRestResponse resp = new BytesRestResponse(RestStatus.FORBIDDEN, "Forbidden path");
 			        channel.sendResponse(resp);
 				}

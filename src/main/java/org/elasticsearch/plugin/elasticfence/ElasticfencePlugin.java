@@ -26,7 +26,7 @@ public class ElasticfencePlugin extends Plugin {
 		return "Elasticfence";
 	}
 
-
+	
 //    public Collection<Class<? extends Module>> modules() {
     public void onModule(RestModule module) {
     	String isPluginDisabled = settings.get("elasticfence.disabled");

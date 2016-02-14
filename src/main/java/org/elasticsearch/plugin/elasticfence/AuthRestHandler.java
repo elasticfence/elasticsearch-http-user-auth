@@ -18,7 +18,7 @@ public class AuthRestHandler extends BaseRestHandler {
     public AuthRestHandler(Settings settings, RestController restController, Client client) {
     	super(settings, restController, client);
         restController.registerHandler(GET, "/_httpuserauth", this);
-        RestFilter filter = new AuthRestFilter(client);
+        RestFilter filter = new AuthRestFilter(client, settings);
         restController.registerFilter(filter);
     }
 

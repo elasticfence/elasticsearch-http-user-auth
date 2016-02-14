@@ -3,12 +3,14 @@ package org.elasticsearch.plugin.elasticfence;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.collect.Maps;
 import org.elasticsearch.plugin.elasticfence.data.UserData;
 import org.elasticsearch.plugin.elasticfence.logger.EFLogger;
+import org.elasticsearch.plugin.elasticfence.parser.RequestParser;
 
 /**
  * A class for checking an index path is accessible by a user. 
@@ -36,6 +38,103 @@ public class UserAuthenticator {
 			return true;
 		}
 	}
+
+	public boolean isAccessibleIndices(RequestParser parser) {
+		if (user == null) {
+			return false;
+		}
+
+		if (user.getUsername().equals("root")) {
+			return true;
+		}
+		
+		Set<String> filters = user.getIndexFilters();
+		if (filters.contains("/*")) {
+			// /* is only accessible by root. 
+			return false;
+		}
+		String apiName = parser.getApiName();
+		List<String> indices = parser.getIndicesInPath();
+		
+		switch (apiName) {
+			case "_msearch":
+				try {
+					indices = parser.getIndicesFromMsearchRequestBody();
+					if (filters.containsAll(indices)) {
+						return true;
+					}
+				} catch (Exception e) {
+					EFLogger.error("", e);
+				}
+				return false;
+			case "_mget":
+				try {
+					indices = parser.getIndicesFromMgetRequestBody();
+					if (filters.containsAll(indices)) {
+						return true;
+					}
+				} catch (Exception e) {
+					EFLogger.error("", e);
+				}
+				return false;
+			case "_bulk":
+				try {
+					indices = parser.getIndicesFromBulkRequestBody();
+					if (filters.containsAll(indices)) {
+						return true;
+					}
+				} catch (Exception e) {
+					EFLogger.error("", e);
+				}
+				return false;
+			default:
+				break;
+		}
+		
+		// check kibana accessibility
+		if (isKibanaRequest(parser.getPath()) && isAccessibleUserToKibana(filters)) {
+			return true;
+		}
+		
+		// reject if indices contains the empty index ("/") and apiName is not empty
+		if (indices.contains("/") && apiName.equals("") == false) {
+			return false;
+		}
+		
+		// simply compare path indices and index filters
+		if (filters.containsAll(indices)) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * check request path if it is used by kibana
+	 * @param requestPath
+	 * @return
+	 */
+	private boolean isKibanaRequest(String requestPath) {
+		if (requestPath.equals("/") || requestPath.equals("/_nodes") || requestPath.equals("/_cluster/health/.kibana")) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * check if an user has auth to kibana
+	 * @param filters
+	 * @return
+	 */
+	private boolean isAccessibleUserToKibana(Set<String> filters) {
+		if (filters.contains("/.kibana")) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 	/**
 	 * authenticate a combination of user, password and path
 	 * @param path
@@ -66,7 +165,7 @@ public class UserAuthenticator {
 		
 		return false;
 	}
-
+	
 	/**
 	 * load authentication info when ES instance starts
 	 * @param userPassIndices List < Map <key, val>> 
@@ -81,7 +180,7 @@ public class UserAuthenticator {
 	 * @param userPassIndices List < Map <key, val>> 
 	 */
 	public static void reloadUserDataCache(List<UserData> userDataList) {
-		users  = Maps.newConcurrentMap();
+		Map<String, UserData> users  = Maps.newConcurrentMap();
 		if (userDataList != null) {
 			for (UserData userData : userDataList) {
 				users.put(userData.getUsername(), userData);
@@ -89,6 +188,7 @@ public class UserAuthenticator {
 		}
 		// At last, add root user information
 		users.put("root", UserData.restoreFromESData("root", rootPassword, "/*"));
+		UserAuthenticator.users = users;
 	}
 
 	public static void setRootPassword(String rootPassword) {

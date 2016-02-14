@@ -37,7 +37,7 @@ public class UserDataBridge {
 	
 	public UserDataBridge(Client client) {
 		this.client = client;
-		if (!createIndexIfEmpty()) {
+		if (!isInitialized && !createIndexIfEmpty()) {
 			EFLogger.error("failed to create index: " + HTTP_USER_AUTH_INDEX);
 		}
 	}
@@ -116,7 +116,7 @@ public class UserDataBridge {
 			if (index.charAt(0) != '/') {
 				index = "/" + index;
 			}
-			if (index.equals("/*") || index.equals("/")) {
+			if (index.equals("/*")) {
 				continue;
 			}
 			indexFilters.add(index);
@@ -156,7 +156,7 @@ public class UserDataBridge {
 			if (index.charAt(0) != '/') {
 				index = "/" + index;
 			}
-			if (index.equals("/*") || index.equals("/")) {
+			if (index.equals("/*")) {
 				continue;
 			}
 			indexFilters.add(index);
