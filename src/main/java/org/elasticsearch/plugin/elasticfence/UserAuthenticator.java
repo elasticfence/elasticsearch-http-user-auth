@@ -49,20 +49,18 @@ public class UserAuthenticator {
 		}
 		
 		Set<String> filters = user.getIndexFilters();
-		if (filters.contains("/*")) {
+		String apiName = parser.getApiName();
+		List<String> indices = parser.getIndicesInPath();
+		if (indices.contains("/*")) {
 			// /* is only accessible by root. 
 			return false;
 		}
-		String apiName = parser.getApiName();
-		List<String> indices = parser.getIndicesInPath();
 		
 		switch (apiName) {
 			case "_msearch":
 				try {
 					indices = parser.getIndicesFromMsearchRequestBody();
-					if (filters.containsAll(indices)) {
-						return true;
-					}
+					return checkIndicesWithFilters(indices, filters);
 				} catch (Exception e) {
 					EFLogger.error("", e);
 				}
@@ -70,9 +68,7 @@ public class UserAuthenticator {
 			case "_mget":
 				try {
 					indices = parser.getIndicesFromMgetRequestBody();
-					if (filters.containsAll(indices)) {
-						return true;
-					}
+					return checkIndicesWithFilters(indices, filters);
 				} catch (Exception e) {
 					EFLogger.error("", e);
 				}
@@ -80,9 +76,7 @@ public class UserAuthenticator {
 			case "_bulk":
 				try {
 					indices = parser.getIndicesFromBulkRequestBody();
-					if (filters.containsAll(indices)) {
-						return true;
-					}
+					return checkIndicesWithFilters(indices, filters);
 				} catch (Exception e) {
 					EFLogger.error("", e);
 				}
@@ -102,11 +96,27 @@ public class UserAuthenticator {
 		}
 		
 		// simply compare path indices and index filters
-		if (filters.containsAll(indices)) {
-			return true;
+//		if (filters.containsAll(indices)) {
+//			return true;
+//		}
+		return checkIndicesWithFilters(indices, filters);
+	}
+	
+	private boolean checkIndicesWithFilters(List<String> indices, Set<String> filters) {
+		for (String index : indices) {
+			boolean passed = false;
+			for (String filter : filters) {
+				if (ifFilterCoversIndex(index, filter)) {
+					passed = true;
+					break;
+				}
+			}
+			if (passed == false) {
+				return false;
+			}
 		}
 		
-		return false;
+		return true;
 	}
 	
 	/**
@@ -115,7 +125,8 @@ public class UserAuthenticator {
 	 * @return
 	 */
 	private boolean isKibanaRequest(String requestPath) {
-		if (requestPath.equals("/") || requestPath.equals("/_nodes") || requestPath.equals("/_cluster/health/.kibana")) {
+		String index = normalizeUrlPath(requestPath);
+		if (requestPath.equals("/") || requestPath.equals("/_nodes") || index.equals("/.kibana") || requestPath.equals("/_cluster/health/.kibana")) {
 			return true;
 		}
 		
@@ -224,10 +235,10 @@ public class UserAuthenticator {
 		}
 		
 		if (!filter.contains("*")) {
-			if (index.contains("*")) {
+			if (index.equals("*")) {
 				return true;
 			} else {
-				// just compare if both filter and index are simple strings
+				// compare as strings
 				return index.equals(filter);
 			}
 		}
