@@ -15,14 +15,13 @@ This plugin provides user authentication APIs and a User management web console.
 
 ## Installation 
 <pre>
-bin/plugin --url 
-https://raw.githubusercontent.com/elasticfence/elasticsearch-http-user-auth/2.2.x/jar/elasticfence-2.2.0-SNAPSHOT.zip --install elasticfence
+bin/plugin install https://raw.githubusercontent.com/elasticfence/elasticsearch-http-user-auth/2.2.x/jar/elasticfence-2.2.0-SNAPSHOT.zip
 </pre>
 
 #### Build with Maven
 <pre>
 mvn package clean
-bin/plugin --url file:///path/to/repo/jar/elasticfence-2.2.0-SNAPSHOT.zip --install elasticfence
+bin/plugin install file:///path/to/repo/jar/elasticfence-2.2.0-SNAPSHOT.zip
 </pre>
 
 ## Configuration
