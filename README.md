@@ -1,4 +1,4 @@
-![](https://travis-ci.org/elasticfence/elasticsearch-http-user-auth.svg)
+[![Build Status](https://travis-ci.org/elasticfence/elasticsearch-http-user-auth.svg?branch=master)](https://travis-ci.org/elasticfence/elasticsearch-http-user-auth)
 
 ![](http://i.imgur.com/OFFgrm8.png?1)
 
@@ -10,7 +10,6 @@ This plugin provides user authentication APIs and a User management web console.
 
 | Version        | Release           | Branch  |
 | ------------- |:-------------:| -----:|
-| Elasticsearch 1.x | 1.0-SNAPSHOT | [master](https://github.com/elasticfence/elasticsearch-http-user-auth/tree/master) |
 | Elasticsearch 2.x | 2.0-SNAPSHOT | [2.0](https://github.com/elasticfence/elasticsearch-http-user-auth/tree/2.0) |
 
 ## Installation 
