@@ -8,19 +8,15 @@ Elasticsearch user authentication plugin with http basic auth and IP ACL
 
 This plugin provides user authentication APIs and a User management web console. 
 
-| Version        | Release           | Branch  |
-| ------------- |:-------------:| -----:|
-| Elasticsearch 2.x | 2.0-SNAPSHOT | [2.0](https://github.com/elasticfence/elasticsearch-http-user-auth/tree/2.0) |
-
 ## Installation 
 <pre>
-bin/plugin install https://raw.githubusercontent.com/elasticfence/elasticsearch-http-user-auth/2.2.x/jar/elasticfence-2.2.0-SNAPSHOT.zip
+bin/plugin install https://raw.githubusercontent.com/elasticfence/elasticsearch-http-user-auth/2.3.x/jar/elasticfence-2.3.1-SNAPSHOT.zip
 </pre>
 
 #### Build with Maven
 <pre>
 mvn package clean
-bin/plugin install file:///path/to/repo/jar/elasticfence-2.2.0-SNAPSHOT.zip
+bin/plugin install file:///path/to/repo/jar/elasticfence-2.3.1-SNAPSHOT.zip
 </pre>
 
 ## Configuration
