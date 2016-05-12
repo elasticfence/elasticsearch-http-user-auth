@@ -78,7 +78,7 @@ marvel.agent.exporter.es.hosts: ["root:rootpassword@127.0.0.1:9200"]
 </pre>
 
 #### Kibana 4
-kibana.yml:
+Add index filter "/.kibana" to a <b>your_custom_username</b> which you created on Elasticfence and set it in kibana.yml:
 <pre>
 elasticsearch.username: <b>your_custom_username</b>
 elasticsearch.password: <b>your_custom_password</b>
