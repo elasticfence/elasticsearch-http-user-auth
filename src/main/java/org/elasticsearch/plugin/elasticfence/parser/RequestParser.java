@@ -99,15 +99,13 @@ public class RequestParser {
                     while ((token = parser.nextToken()) != XContentParser.Token.END_OBJECT) {
                         if (token == XContentParser.Token.FIELD_NAME) {
                             currentFieldName = parser.currentName();
-                        } else if (token.isValue()) {
-                            if ("_index".equals(currentFieldName)) {
-                                if (!allowExplicitIndex) {
-                                    throw new IllegalArgumentException("explicit index in bulk is not allowed");
-                                }
-                                index = "/" + parser.text();
-                                if (indices.contains(index) == false) {
-                                	indices.add(index);
-                                }
+                        } else if (token.isValue() && "_index".equals(currentFieldName)) {
+                            if (!allowExplicitIndex) {
+                                throw new IllegalArgumentException("explicit index in bulk is not allowed");
+                            }
+                            index = "/" + parser.text();
+                            if (indices.contains(index) == false) {
+                            	indices.add(index);
                             }
                         }
                     }
@@ -137,10 +135,8 @@ public class RequestParser {
             while ((token = parser.nextToken()) != XContentParser.Token.END_OBJECT) {
                 if (token == XContentParser.Token.FIELD_NAME) {
                     currentFieldName = parser.currentName();
-                } else if (token == XContentParser.Token.START_ARRAY) {
-                    if ("docs".equals(currentFieldName)) {
-                    	indices.addAll(parseDocuments(parser, indexInPath, allowExplicitIndex));
-                    }
+                } else if (token == XContentParser.Token.START_ARRAY && "docs".equals(currentFieldName)) {
+                    indices.addAll(parseDocuments(parser, indexInPath, allowExplicitIndex));
                 }
             }
         }
@@ -160,15 +156,13 @@ public class RequestParser {
             while ((token = parser.nextToken()) != XContentParser.Token.END_OBJECT) {
                 if (token == XContentParser.Token.FIELD_NAME) {
                     currentFieldName = parser.currentName();
-                } else if (token.isValue()) {
-                    if ("_index".equals(currentFieldName)) {
-                        if (!allowExplicitIndex) {
-                            throw new IllegalArgumentException("explicit index in multi get is not allowed");
-                        }
-                        index = "/" + parser.text();
-                        if (indices.contains(index) == false) {
-                        	indices.add(index);
-                        }
+                } else if (token.isValue() && "_index".equals(currentFieldName)) {
+                    if (!allowExplicitIndex) {
+                        throw new IllegalArgumentException("explicit index in multi get is not allowed");
+                    }
+                    index = "/" + parser.text();
+                    if (indices.contains(index) == false) {
+                    	indices.add(index);
                     }
                 }
             }
