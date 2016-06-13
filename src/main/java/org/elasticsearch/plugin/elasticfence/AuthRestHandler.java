@@ -35,7 +35,7 @@ public class AuthRestHandler extends BaseRestHandler {
 	        channel.sendResponse(new BytesRestResponse(SERVICE_UNAVAILABLE, "http user auth initializing..."));
 	        return ;
         }
-		if (mode.equals("list")) {
+		if ("list".equals(mode)) {
 	        try {
 		        String userListJSON = userDataBridge.listUser();
 		        channel.sendResponse(new BytesRestResponse(OK, userListJSON));
@@ -45,7 +45,7 @@ public class AuthRestHandler extends BaseRestHandler {
 	        }
 	        return ;
 		}
-		if (mode.equals("adduser")) {
+		if ("adduser".equals(mode)) {
 			String userName = request.param("username");
 			String password = request.param("password");
 	        try {
@@ -62,7 +62,7 @@ public class AuthRestHandler extends BaseRestHandler {
 		        return ;
 	        }
 		}
-		if (mode.equals("addindex")) {
+		if ("addindex".equals(mode)) {
 			String userName  = request.param("username");
 			String indexName = request.param("index");
 
@@ -81,7 +81,7 @@ public class AuthRestHandler extends BaseRestHandler {
 	        return;
 		}
 
-		if (mode.equals("updateindex")) {
+		if ("updateindex".equals(mode)) {
 			String userName  = request.param("username");
 			String indexName = request.param("index");
 
@@ -100,7 +100,7 @@ public class AuthRestHandler extends BaseRestHandler {
 	        return;
 		}
 		
-		if (mode.equals("passwd")) {
+		if ("passwd".equals(mode)) {
 			String userName = request.param("username");
 			String oldPassword = request.param("old_password");
 			String newPassword = request.param("new_password");
@@ -114,7 +114,7 @@ public class AuthRestHandler extends BaseRestHandler {
 	        return;
 		}
 
-		if (mode.equals("deleteuser")) {
+		if ("deleteuser".equals(mode)) {
 			String userName  = request.param("username");
 	        
 	        boolean res = userDataBridge.deleteUser(userName);

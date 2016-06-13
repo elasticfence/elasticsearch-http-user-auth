@@ -40,7 +40,7 @@ public class UserAuthenticator {
 			return false;
 		}
 
-		if (user.getUsername().equals("root")) {
+		if ("root".equals(user.getUsername())) {
 			return true;
 		}
 		
@@ -87,7 +87,7 @@ public class UserAuthenticator {
 		}
 		
 		// reject if indices contains the empty index ("/") and apiName is not empty
-		if (indices.contains("/") && !apiName.equals("")) {
+		if (indices.contains("/") && !"".equals(apiName)) {
 			return false;
 		}
 		
@@ -122,7 +122,7 @@ public class UserAuthenticator {
 	 */
 	private boolean isKibanaRequest(String requestPath) {
 		String index = normalizeUrlPath(requestPath);
-		if (requestPath.equals("/") || requestPath.equals("/_nodes") || index.equals("/.kibana") || requestPath.equals("/_cluster/health/.kibana")) {
+		if ("/".equals(requestPath) || "/_nodes".equals(requestPath) || "/.kibana".equals(index) || "/_cluster/health/.kibana".equals(requestPath)) {
 			return true;
 		}
 		
@@ -154,12 +154,12 @@ public class UserAuthenticator {
 			return false;
 		}
 		
-		if (user.getUsername().equals("root")) {
+		if ("root".equals(user.getUsername())) {
 			return true;
 		}
 		
 		// the all matching path /* is only accessible by root. 
-		if (path.equals("/*")) {
+		if ("/*".equals(path)) {
 			return false;
 		}
 		
@@ -228,15 +228,15 @@ public class UserAuthenticator {
 			return true;
 		
 		// processing a special case in advance
-		if (index.equals("") || filter.equals("")) {
-			if (filter.equals("") && index.equals("")) {
+		if ("".equals(index) || "".equals(filter)) {
+			if ("".equals(filter) && "".equals(index)) {
 				return true;
 			}
 			return false;
 		}
 		
 		if (!filter.contains("*")) {
-			if (index.equals("*")) {
+			if ("*".equals(index)) {
 				return true;
 			} else {
 				// compare as strings
@@ -256,7 +256,7 @@ public class UserAuthenticator {
 			String[] splitStrArr = filter.split("\\*");
 			for (int i = 0; i < splitStrArr.length; i++) {
 				if (i < splitStrArr.length - 1) {
-					if (splitStrArr[i].equals("")) {
+					if ("".equals(splitStrArr[i])) {
 						regexStr += ".*?";
 					} else {
 						regexStr += Pattern.quote(splitStrArr[i]) + ".*?";
@@ -285,7 +285,7 @@ public class UserAuthenticator {
 	 * @return
 	 */
 	private static String normalizeUrlPath(String path) {
-		if (path.equals("") || path.charAt(0) != '/') {
+		if ("".equals(path) || path.charAt(0) != '/') {
 			path = "/" + path;
 		}
 		try {
@@ -301,18 +301,18 @@ public class UserAuthenticator {
 		}
 		
 		// this case won't occur, but just in case
-		if (path.equals("")) 
+		if ("".equals(path)) 
 			return "/";
 		
 		// single slash is special path
-		if (path.equals("/")) 
+		if ("/".equals(path)) 
 			return "/";
 		
 		String[] pathInfo = path.split("/");
 		String index = "";
 		for (String str : pathInfo) {
 			// first none-empty string is index name
-			if (str.equals("")) 
+			if ("".equals(str)) 
 				continue;
 			index = str;
 			break;
