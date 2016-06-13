@@ -37,7 +37,7 @@ public class RequestParser {
 	}
 	
 	private void initialize() {
-		if (isInitialized == false) {
+		if (!isInitialized) {
 			normalizedPath = normalizePath(request.path());
 			indexInPath    = extractIndexFromPath(normalizedPath);
 			indicesInPath  = extractIndicesFromPath(normalizedPath);
@@ -91,7 +91,7 @@ public class RequestParser {
                 assert token == XContentParser.Token.FIELD_NAME;
                 String action = parser.currentName();
 
-                String index = indexInPath;
+                String index;
                 token = parser.nextToken();
 
                 if (token == XContentParser.Token.START_OBJECT) {
@@ -99,19 +99,21 @@ public class RequestParser {
                     while ((token = parser.nextToken()) != XContentParser.Token.END_OBJECT) {
                         if (token == XContentParser.Token.FIELD_NAME) {
                             currentFieldName = parser.currentName();
-                        } else if (token.isValue() && "_index".equals(currentFieldName)) {
-                            if (!allowExplicitIndex) {
-                                throw new IllegalArgumentException("explicit index in bulk is not allowed");
-                            }
-                            index = "/" + parser.text();
-                            if (indices.contains(index) == false) {
-                            	indices.add(index);
+                        } else if (token.isValue()) {
+                            if ("_index".equals(currentFieldName)) {
+                                if (!allowExplicitIndex) {
+                                    throw new IllegalArgumentException("explicit index in bulk is not allowed");
+                                }
+                                index = "/" + parser.text();
+                                if (!indices.contains(index)) {
+                                	indices.add(index);
+                                }
                             }
                         }
                     }
                 }
 
-                if ("delete".equals(action) == false) {
+                if (!"delete".equals(action)) {
                     nextMarker = findNextMarker(marker, from, data, length);
                     if (nextMarker == -1) {
                         break;
@@ -135,8 +137,10 @@ public class RequestParser {
             while ((token = parser.nextToken()) != XContentParser.Token.END_OBJECT) {
                 if (token == XContentParser.Token.FIELD_NAME) {
                     currentFieldName = parser.currentName();
-                } else if (token == XContentParser.Token.START_ARRAY && "docs".equals(currentFieldName)) {
-                    indices.addAll(parseDocuments(parser, indexInPath, allowExplicitIndex));
+                } else if (token == XContentParser.Token.START_ARRAY) {
+                    if ("docs".equals(currentFieldName)) {
+                    	indices.addAll(parseDocuments(parser, indexInPath, allowExplicitIndex));
+                    }
                 }
             }
         }
@@ -152,17 +156,19 @@ public class RequestParser {
             if (token != XContentParser.Token.START_OBJECT) {
                 throw new IllegalArgumentException("docs array element should include an object");
             }
-            String index = defaultIndex;
+            String index;
             while ((token = parser.nextToken()) != XContentParser.Token.END_OBJECT) {
                 if (token == XContentParser.Token.FIELD_NAME) {
                     currentFieldName = parser.currentName();
-                } else if (token.isValue() && "_index".equals(currentFieldName)) {
-                    if (!allowExplicitIndex) {
-                        throw new IllegalArgumentException("explicit index in multi get is not allowed");
-                    }
-                    index = "/" + parser.text();
-                    if (indices.contains(index) == false) {
-                    	indices.add(index);
+                } else if (token.isValue()) {
+                    if ("_index".equals(currentFieldName)) {
+                        if (!allowExplicitIndex) {
+                            throw new IllegalArgumentException("explicit index in multi get is not allowed");
+                        }
+                        index = "/" + parser.text();
+                        if (!indices.contains(index)) {
+                        	indices.add(index);
+                        }
                     }
                 }
             }
@@ -209,7 +215,7 @@ public class RequestParser {
                             }
                             for (String index : nodeStringArrayValue(value)) {
                             	index = "/" + index;
-                            	if (indexList.contains(index) == false) {
+                            	if (!indexList.contains(index)) {
                             		indexList.add(index);
                             	}
                             }
@@ -257,7 +263,7 @@ public class RequestParser {
 		if (indexStr.indexOf(',') >= 0) {
 			for (String index : indexStr.split(",")) {
 				index = "/" + index;
-				if (indices.contains(index) == false) {
+				if (!indices.contains(index)) {
 					indices.add(index);
 				}
 			}

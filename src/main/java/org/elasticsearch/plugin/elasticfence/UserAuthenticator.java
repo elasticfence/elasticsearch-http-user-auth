@@ -91,7 +91,7 @@ public class UserAuthenticator {
 		}
 		
 		// reject if indices contains the empty index ("/") and apiName is not empty
-		if (indices.contains("/") && apiName.equals("") == false) {
+		if (indices.contains("/") && !apiName.equals("")) {
 			return false;
 		}
 		
@@ -111,7 +111,7 @@ public class UserAuthenticator {
 					break;
 				}
 			}
-			if (passed == false) {
+			if (!passed) {
 				return false;
 			}
 		}

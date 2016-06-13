@@ -210,7 +210,7 @@ public class UserDataBridge {
 	}
 	
 	private boolean putUser(UserData user) {
-		String created = "";
+		String created;
 		if (user.getCreated() == null) {
 	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ");
 	        created = sdf.format(new Date());
