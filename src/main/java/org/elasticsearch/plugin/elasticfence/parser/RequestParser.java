@@ -37,7 +37,7 @@ public class RequestParser {
 	}
 	
 	private void initialize() {
-		if (isInitialized == false) {
+		if (!isInitialized) {
 			normalizedPath = normalizePath(request.path());
 			indexInPath    = extractIndexFromPath(normalizedPath);
 			indicesInPath  = extractIndicesFromPath(normalizedPath);
@@ -105,7 +105,7 @@ public class RequestParser {
                                     throw new IllegalArgumentException("explicit index in bulk is not allowed");
                                 }
                                 index = "/" + parser.text();
-                                if (indices.contains(index) == false) {
+                                if (!indices.contains(index)) {
                                 	indices.add(index);
                                 }
                             }
@@ -113,7 +113,7 @@ public class RequestParser {
                     }
                 }
 
-                if ("delete".equals(action) == false) {
+                if (!"delete".equals(action)) {
                     nextMarker = findNextMarker(marker, from, data, length);
                     if (nextMarker == -1) {
                         break;
@@ -166,7 +166,7 @@ public class RequestParser {
                             throw new IllegalArgumentException("explicit index in multi get is not allowed");
                         }
                         index = "/" + parser.text();
-                        if (indices.contains(index) == false) {
+                        if (!indices.contains(index)) {
                         	indices.add(index);
                         }
                     }
@@ -215,7 +215,7 @@ public class RequestParser {
                             }
                             for (String index : nodeStringArrayValue(value)) {
                             	index = "/" + index;
-                            	if (indexList.contains(index) == false) {
+                            	if (!indexList.contains(index)) {
                             		indexList.add(index);
                             	}
                             }
@@ -263,7 +263,7 @@ public class RequestParser {
 		if (indexStr.indexOf(',') >= 0) {
 			for (String index : indexStr.split(",")) {
 				index = "/" + index;
-				if (indices.contains(index) == false) {
+				if (!indices.contains(index)) {
 					indices.add(index);
 				}
 			}
