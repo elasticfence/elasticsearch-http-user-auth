@@ -16,21 +16,25 @@ public class IPAuthenticator {
 		// nothing to see here
         }
         public static void setWhitelist(String[] whitelist) {
-                if (whitelist == null) whitelist = new String[]{};
+                if (whitelist == null) 
+                    whitelist = new String[]{};
                 IPAuthenticator.whitelist = whitelist;
         }
 
         public boolean isWhitelisted(String ip) {
-		if (whitelist == null) return false;
+		        if (whitelist == null) 
+		            return false;
                 return Arrays.asList(whitelist).contains(ip);
         }
         public static void setBlacklist(String[] blacklist) {
-                if (blacklist == null) blacklist = new String[]{};
+                if (blacklist == null) 
+                    blacklist = new String[]{};
                 IPAuthenticator.blacklist = blacklist;
         }
 
         public boolean isBlacklisted(String ip) {
-		if (blacklist == null) return false;
+		        if (blacklist == null) 
+		            return false;
                 return Arrays.asList(blacklist).contains(ip);
         }
 }

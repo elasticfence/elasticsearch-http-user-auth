@@ -199,12 +199,14 @@ public class UserAuthenticator {
 	}
 
 	public static void setRootPassword(String rootPassword) {
-		if (rootPassword == null) rootPassword = "";
+		if (rootPassword == null) 
+			rootPassword = "";
 		UserAuthenticator.rootPassword = UserData.encPassword(rootPassword);
 	}
 
 	public static String getRootPassword() {
-		if (rootPassword == null) return "";
+		if (rootPassword == null) 
+			return "";
 		return rootPassword;
 	}
 	
@@ -217,10 +219,13 @@ public class UserAuthenticator {
 	 * @return
 	 */
 	private boolean ifFilterCoversIndex(String index, String filter) {
-		if (index.startsWith("/")) index = index.substring(1);
-		if (filter.startsWith("/")) filter = filter.substring(1);
+		if (index.startsWith("/")) 
+			index = index.substring(1);
+		if (filter.startsWith("/")) 
+			filter = filter.substring(1);
 		
-		if (index.equals(filter)) return true;
+		if (index.equals(filter)) 
+			return true;
 		
 		// processing a special case in advance
 		if (index.equals("") || filter.equals("")) {
@@ -246,7 +251,8 @@ public class UserAuthenticator {
 		} else {
 			// only filter contains "*" char
 			String regexStr = "";
-			if (!filter.startsWith("*")) regexStr = "^";
+			if (!filter.startsWith("*")) 
+				regexStr = "^";
 			String[] splitStrArr = filter.split("\\*");
 			for (int i = 0; i < splitStrArr.length; i++) {
 				if (i < splitStrArr.length - 1) {
@@ -260,8 +266,10 @@ public class UserAuthenticator {
 				}
 			}
 
-			if (filter.endsWith("*")) regexStr += ".*?$";
-			else regexStr += "$";
+			if (filter.endsWith("*")) 
+				regexStr += ".*?$";
+			else 
+				regexStr += "$";
 			Pattern p = Pattern.compile(regexStr);
 			Matcher m = p.matcher(index);
 			return m.find();
@@ -293,21 +301,25 @@ public class UserAuthenticator {
 		}
 		
 		// this case won't occur, but just in case
-		if (path.equals("")) return "/";
+		if (path.equals("")) 
+			return "/";
 		
 		// single slash is special path
-		if (path.equals("/")) return "/";
+		if (path.equals("/")) 
+			return "/";
 		
 		String[] pathInfo = path.split("/");
 		String index = "";
 		for (String str : pathInfo) {
 			// first none-empty string is index name
-			if (str.equals("")) continue;
+			if (str.equals("")) 
+				continue;
 			index = str;
 			break;
 		}
 		
-		if (index.startsWith("_")) return "/";
+		if (index.startsWith("_")) 
+			return "/";
 		return "/" + index;
 	}
 
