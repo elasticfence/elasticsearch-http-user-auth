@@ -64,7 +64,7 @@ public class RequestParser {
         boolean allowExplicitIndex = settings.getAsBoolean("rest.action.multi.allow_explicit_index", true);
         BytesReference data = RestActions.getRestContent(request);
 
-    	List<String> indices = new ArrayList<String>();
+    	List<String> indices = new ArrayList<>();
         XContent xContent = XContentFactory.xContent(data);
         int from = 0;
         int length = data.length();
@@ -129,7 +129,7 @@ public class RequestParser {
 
     public List<String> getIndicesFromMgetRequestBody() throws Exception {
         boolean allowExplicitIndex = settings.getAsBoolean("rest.action.multi.allow_explicit_index", true);
-        List<String> indices = new ArrayList<String>();
+        List<String> indices = new ArrayList<>();
         BytesReference data = RestActions.getRestContent(request);
         try (XContentParser parser = XContentFactory.xContent(data).createParser(data)) {
             XContentParser.Token token;
@@ -151,7 +151,7 @@ public class RequestParser {
     private List<String> parseDocuments(XContentParser parser, @Nullable String defaultIndex, boolean allowExplicitIndex) throws IOException {
         String currentFieldName = null;
         XContentParser.Token token;
-        List<String> indices = new ArrayList<String>();
+        List<String> indices = new ArrayList<>();
         while ((token = parser.nextToken()) != XContentParser.Token.END_ARRAY) {
             if (token != XContentParser.Token.START_OBJECT) {
                 throw new IllegalArgumentException("docs array element should include an object");
@@ -185,7 +185,7 @@ public class RequestParser {
 	}
 	
     private List<String> parseMsearchRequestBody(BytesReference data, boolean allowExplicitIndex) throws Exception {
-    	List<String> indexList = new ArrayList<String>();
+    	List<String> indexList = new ArrayList<>();
         XContent xContent = XContentFactory.xContent(data);
         int from = 0;
         int length = data.length();
