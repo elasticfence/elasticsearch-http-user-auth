@@ -32,11 +32,11 @@ public class ElasticfencePlugin extends Plugin {
     public void onModule(RestModule module) {
     	String isPluginDisabled = getSettingString("disabled");
         
-    	if (isPluginDisabled != null && isPluginDisabled.equals("true")) {
+    	if (isPluginDisabled != null && "true".equals(isPluginDisabled)) {
             EFLogger.warn("Elasticfence plugin is disabled");
     	} else {
         	String rootPassword = getSettingString("root.password");
-        	if (rootPassword != null && !rootPassword.equals("")) {
+        	if (rootPassword != null && !"".equals(rootPassword)) {
         		UserAuthenticator.setRootPassword(rootPassword);
         		UserAuthenticator.loadRootUserDataCacheOnStart();
         	}
