@@ -107,11 +107,7 @@ public class UserData {
 	}
 	
 	public boolean isValidPassword(String rawPassword) {
-		if (encPassword.equals(encPassword(rawPassword))) {
-			return true;
-		} else {
-			return false;
-		}
+		return encPassword.equals(encPassword(rawPassword));
 	}
 	
 	public String toJSON() {
