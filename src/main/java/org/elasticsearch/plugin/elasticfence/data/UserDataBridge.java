@@ -60,7 +60,8 @@ public class UserDataBridge {
 		for (UserData userData : allUserData) {
 			response += userData.toJSON() + ",";
 		}
-		if (allUserData.size() > 0) response = response.substring(0, response.length() - 1);
+		if (allUserData.size() > 0) 
+			response = response.substring(0, response.length() - 1);
 		response += "]";
 		return response;
 	}
@@ -183,7 +184,8 @@ public class UserDataBridge {
 		}
 		
 		UserData user = getUser(userName);
-		if (user == null) return false;
+		if (user == null) 
+			return false;
 		if (user.isValidPassword(password)) {
 			Set<String> indices = user.getIndexFilters();
 			if (indexName.charAt(0) != '/') {
@@ -200,7 +202,8 @@ public class UserDataBridge {
 	
 	public boolean changePassword (String userName, String oldPassword, String newPassword) {
 		UserData user = getUser(userName);
-		if (user == null) return false;
+		if (user == null) 
+			return false;
 		if (user.isValidPassword(oldPassword)) {
 			user.setPassword(newPassword);
 			putUser(user);
