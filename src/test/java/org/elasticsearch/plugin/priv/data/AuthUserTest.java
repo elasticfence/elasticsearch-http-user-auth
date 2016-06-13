@@ -311,7 +311,7 @@ public class AuthUserTest {
 		UserAuthenticator.reloadUserDataCache(null);
 		UserAuthenticator userAuth;
 		
-		List<UserData> userDataList = new ArrayList<UserData>();
+		List<UserData> userDataList;
 
 		userAuth = new UserAuthenticator("root", "root_password");
 		assertTrue(userAuth.execAuth("/"));

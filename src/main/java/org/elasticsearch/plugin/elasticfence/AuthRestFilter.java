@@ -70,7 +70,7 @@ public class AuthRestFilter extends RestFilter {
 			UserAuthenticator userAuth = new UserAuthenticator(username, password);
 			RequestParser parser = new RequestParser(request, settings);
 			if (userAuth.isValidUser()) {
-				boolean isAccessible = false;
+				boolean isAccessible;
 				isAccessible = userAuth.isAccessibleIndices(parser);
 				if (isAccessible) {
 					try {

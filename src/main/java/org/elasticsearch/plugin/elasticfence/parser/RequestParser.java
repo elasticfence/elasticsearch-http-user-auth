@@ -91,7 +91,7 @@ public class RequestParser {
                 assert token == XContentParser.Token.FIELD_NAME;
                 String action = parser.currentName();
 
-                String index = indexInPath;
+                String index;
                 token = parser.nextToken();
 
                 if (token == XContentParser.Token.START_OBJECT) {
@@ -156,7 +156,7 @@ public class RequestParser {
             if (token != XContentParser.Token.START_OBJECT) {
                 throw new IllegalArgumentException("docs array element should include an object");
             }
-            String index = defaultIndex;
+            String index;
             while ((token = parser.nextToken()) != XContentParser.Token.END_OBJECT) {
                 if (token == XContentParser.Token.FIELD_NAME) {
                     currentFieldName = parser.currentName();
