@@ -22,11 +22,7 @@ public class IPAuthenticator {
 
         public boolean isWhitelisted(String ip) {
 		if (whitelist == null) return false;
-                if ( Arrays.asList(whitelist).contains(ip) ) {
-                        return true;
-                } else {
-                        return false;
-                }
+                return Arrays.asList(whitelist).contains(ip);
         }
         public static void setBlacklist(String[] blacklist) {
                 if (blacklist == null) blacklist = new String[]{};
@@ -35,11 +31,7 @@ public class IPAuthenticator {
 
         public boolean isBlacklisted(String ip) {
 		if (blacklist == null) return false;
-                if ( Arrays.asList(blacklist).contains(ip) ) {
-                        return true;
-                } else {
-                        return false;
-                }
+                return Arrays.asList(blacklist).contains(ip);
         }
 }
 

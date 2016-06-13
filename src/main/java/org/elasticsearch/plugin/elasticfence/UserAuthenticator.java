@@ -32,11 +32,7 @@ public class UserAuthenticator {
 		}
 	}
 	public boolean isValidUser() {
-		if (user == null) {
-			return false;
-		} else {
-			return true;
-		}
+		return user != null;
 	}
 
 	public boolean isAccessibleIndices(RequestParser parser) {
@@ -246,11 +242,7 @@ public class UserAuthenticator {
 		// processing regex conditions
 		if (index.contains("*")) {
 			// just compare if both filter and index include "*" character, too. 
-			if (index.equals(filter)) {
-				return true;
-			} else {
-				return false;
-			}
+			return index.equals(filter);
 		} else {
 			// only filter contains "*" char
 			String regexStr = "";
@@ -272,11 +264,7 @@ public class UserAuthenticator {
 			else regexStr += "$";
 			Pattern p = Pattern.compile(regexStr);
 			Matcher m = p.matcher(index);
-			if (m.find()){
-				return true;
-			} else {
-				return false;
-			}
+			return m.find();
 		}
 	}
 	
