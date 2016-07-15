@@ -90,7 +90,7 @@ elasticsearch.password: <b>your_custom_password</b>
 
 This plugin provides a web console which manages users. 
 <pre>
-http://your.elasticsearch.hostname:9200/_plugin/http-user-auth-plugin/index.html
+http://your.elasticsearch.hostname:9200/_plugin/elasticfence/index.html
 </pre>
 
 ## User Management API
