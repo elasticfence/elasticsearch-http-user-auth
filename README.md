@@ -84,6 +84,10 @@ elasticsearch.username: <b>your_custom_username</b>
 elasticsearch.password: <b>your_custom_password</b>
 </pre>
 
+Add permissions to your <b>kibana</b> users using regex filters: 
+<pre>
+/index.*,/_.*,/.kibana,/
+</pre>
 
 
 ## User Management Console
