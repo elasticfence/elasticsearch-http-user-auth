@@ -48,17 +48,27 @@ public class UserAuthenticator {
 		String apiName = parser.getApiName();
 		List<String> indices = parser.getIndicesInPath();
 		if (indices.contains("/*")) {
-			// /* is only accessible by root. 
-			return false;
+			// /* is only accessible by root. */
+			return true;
 		}
 		
+		// check kibana accessibility
+		if (isAccessibleUserFilter(filters, parser.getPath()) ) {
+			return true;
+		}
+		// check kibana accessibility
+		if (isKibanaRequest(parser.getPath()) && isAccessibleUserToKibana(filters)) {
+			return true;
+		}
+		
+
 		switch (apiName) {
 			case "_msearch":
 				try {
 					indices = parser.getIndicesFromMsearchRequestBody();
 					return checkIndicesWithFilters(indices, filters);
 				} catch (Exception e) {
-					EFLogger.error("", e);
+					EFLogger.error("block _msearch", e);
 				}
 				return false;
 			case "_mget":
@@ -66,7 +76,7 @@ public class UserAuthenticator {
 					indices = parser.getIndicesFromMgetRequestBody();
 					return checkIndicesWithFilters(indices, filters);
 				} catch (Exception e) {
-					EFLogger.error("", e);
+					EFLogger.error("block _mget", e);
 				}
 				return false;
 			case "_bulk":
@@ -74,16 +84,11 @@ public class UserAuthenticator {
 					indices = parser.getIndicesFromBulkRequestBody();
 					return checkIndicesWithFilters(indices, filters);
 				} catch (Exception e) {
-					EFLogger.error("", e);
+					EFLogger.error("block _bulk", e);
 				}
 				return false;
 			default:
 				break;
-		}
-		
-		// check kibana accessibility
-		if (isKibanaRequest(parser.getPath()) && isAccessibleUserToKibana(filters)) {
-			return true;
 		}
 		
 		// reject if indices contains the empty index ("/") and apiName is not empty
@@ -122,7 +127,7 @@ public class UserAuthenticator {
 	 */
 	private boolean isKibanaRequest(String requestPath) {
 		String index = normalizeUrlPath(requestPath);
-		if ("/".equals(requestPath) || "/_nodes".equals(requestPath) || "/.kibana".equals(index) || "/_cluster/health/.kibana".equals(requestPath)) {
+		if ("/".equals(requestPath) || "/_nodes".equals(requestPath) || "/.kibana".equals(index) || "/_cluster/health/.kibana".equals(requestPath) || "_mget".equals(index) ) {
 			return true;
 		}
 		
@@ -139,6 +144,24 @@ public class UserAuthenticator {
 			return true;
 		}
 		
+		return false;
+	}
+	
+	/**
+	 * check if an user has filter matching regex rules
+	 * @param filters
+	 * @param requestPath
+	 * @return
+	 */
+	private boolean isAccessibleUserFilter(Set<String> filters, String requestPath) {
+		String index = normalizeUrlPath(requestPath);
+		String[] array = filters.toArray(new String[0]);
+		for( String filter : array ) {
+			// EFLogger.info("Checking url: " + index + " with regex " + filter);
+			if (index.matches(filter)) {
+				return true;
+			}
+		}
 		return false;
 	}
 	

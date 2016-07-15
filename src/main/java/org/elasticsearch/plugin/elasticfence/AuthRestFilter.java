@@ -76,14 +76,14 @@ public class AuthRestFilter extends RestFilter {
 					try {
 						filterChain.continueProcessing(request, channel);
 					} catch (IndexNotFoundException infe) {
-						EFLogger.debug("index not found: " + request.path());
+						EFLogger.info("index not found: " + request.path());
 					} catch (Exception ex) {
 						EFLogger.error("exception occurred: " + request.path(), ex);
 					}
 			    	return ;
 				} else {
 					// forbidden path 
-					EFLogger.debug("forbidden path: " + request.path());
+					EFLogger.info("forbidden path: " + request.path());
 					BytesRestResponse resp = new BytesRestResponse(RestStatus.FORBIDDEN, "Forbidden path");
 			        channel.sendResponse(resp);
 				}
