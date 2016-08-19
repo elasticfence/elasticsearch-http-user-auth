@@ -26,7 +26,7 @@ elasticfence.disabled: false
 elasticfence.root.password: rootpassword
 </pre>
 
-To disable the plugin set `http.user.auth.disabled` to `true`  
+To disable the plugin set `elasticfence.disabled` to `true`  
 
 To set the root password on each start use `http.user.auth.root.password`   
 **Only the root user can access ES's root APIs (like /_cat, /_cluster) and all indices.**
