@@ -53,8 +53,8 @@ public class AuthRestFilter extends RestFilter {
 			if (username == null || password == null) {
 				BytesRestResponse resp = new BytesRestResponse(RestStatus.UNAUTHORIZED, "Needs Basic Auth");
 				resp.addHeader("WWW-Authenticate", "Basic realm=\"Http User Auth Plugin\"");
-		        channel.sendResponse(resp);
-		        EFLogger.info("auth failed: " + request.path());
+		        	channel.sendResponse(resp);
+		        	EFLogger.info( ipaddr + " auth failed: " + request.path());
 				return ;
 			}
 			
