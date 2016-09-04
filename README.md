@@ -1,37 +1,32 @@
-![](https://travis-ci.org/elasticfence/elasticsearch-http-user-auth.svg)
+[![Build Status](https://travis-ci.org/elasticfence/elasticsearch-http-user-auth.svg?branch=master)](https://travis-ci.org/elasticfence/elasticsearch-http-user-auth)
 
 ![](http://i.imgur.com/OFFgrm8.png?1)
 
-# Elasticsearch HTTP Basic User Auth plugin
+# Elasticfence - Elasticsearch HTTP Basic User Auth plugin
 
 Elasticsearch user authentication plugin with http basic auth and IP ACL
 
 This plugin provides user authentication APIs and a User management web console. 
 
-| Version        | Release           | Branch  |
-| ------------- |:-------------:| -----:|
-| Elasticsearch 1.x | 1.0-SNAPSHOT | [master](https://github.com/elasticfence/elasticsearch-http-user-auth/tree/master) |
-| Elasticsearch 2.x | 2.0-SNAPSHOT | [2.0](https://github.com/elasticfence/elasticsearch-http-user-auth/tree/2.0) |
-
 ## Installation 
 <pre>
-bin/plugin --url https://raw.githubusercontent.com/elasticfence/elasticsearch-http-user-auth/master/jar/http-user-auth-plugin-1.0-SNAPSHOT.jar --install http-user-auth-plugin
+bin/plugin install https://raw.githubusercontent.com/elasticfence/elasticsearch-http-user-auth/2.4/jar/elasticfence-2.4.0-SNAPSHOT.zip
 </pre>
 
 #### Build with Maven
 <pre>
 mvn package clean
-bin/plugin --url file:///path/to/repo/jar/http-user-auth-plugin-1.0-SNAPSHOT.zip --install http-user-auth-plugin
+bin/plugin install file:///path/to/repo/jar/elasticfence-2.4.0-SNAPSHOT.zip
 </pre>
 
 ## Configuration
 Add following lines to elasticsearch.yml:
 <pre>
-http.user.auth.disabled: false
-http.user.auth.root.password: rootpassword
+elasticfence.disabled: false
+elasticfence.root.password: rootpassword
 </pre>
 
-To disable the plugin set `http.user.auth.disabled` to `true`  
+To disable the plugin set `elasticfence.disabled` to `true`  
 
 To set the root password on each start use `http.user.auth.root.password`   
 **Only the root user can access ES's root APIs (like /_cat, /_cluster) and all indices.**
@@ -41,8 +36,8 @@ Other users can access URLs under their own indices that are specified with this
 ### Basic IP ACL
 IPs contained in whitelist/blacklist arrays will bypass authentication
 <pre>
-http.user.auth.whitelist: ["127.0.0.1", "10.0.0.1"]
-http.user.auth.blacklist: ["127.0.0.2", "10.0.0.99"]
+elasticfence.whitelist: ["127.0.0.1", "10.0.0.1"]
+elasticfence.blacklist: ["127.0.0.2", "10.0.0.99"]
 </pre>
 
 ## Add username and password on HTTP requests
@@ -83,19 +78,23 @@ marvel.agent.exporter.es.hosts: ["root:rootpassword@127.0.0.1:9200"]
 </pre>
 
 #### Kibana 4
-kibana.yml:
+Add index filter "/.kibana" to a <b>your_custom_username</b> which you created on Elasticfence and set it in kibana.yml:
 <pre>
-elasticsearch.username: root
-elasticsearch.password: rootpassword
+elasticsearch.username: <b>your_custom_username</b>
+elasticsearch.password: <b>your_custom_password</b>
 </pre>
 
+Add permissions to your <b>kibana</b> users using regex filters: 
+<pre>
+/index.*,/_.*,/.kibana,/
+</pre>
 
 
 ## User Management Console
 
 This plugin provides a web console which manages users. 
 <pre>
-http://your.elasticsearch.hostname:9200/_plugin/http-user-auth-plugin/index.html
+http://your.elasticsearch.hostname:9200/_plugin/elasticfence/index.html
 </pre>
 
 ## User Management API
