@@ -43,7 +43,18 @@ public class IPAuthenticator {
         public static void setBlacklist(String[] blacklist) {
                 if (blacklist == null) 
                     blacklist = new String[]{};
-                IPAuthenticator.blacklist = blacklist;
+                List<String> tmp = new ArrayList<String>();
+                for (String str: blacklist) {
+                    if (str.contains("/")) {
+                        SubnetUtils utils = new SubnetUtils(str);
+                        for (String ip: utils.getInfo().getAllAddresses()) {
+                            tmp.add(ip);
+                        }   
+                    } else {
+                        tmp.add(str);
+                    }   
+                }   
+                IPAuthenticator.blacklist = tmp.toArray(new String[0]);
         }
 
         public boolean isBlacklisted(String ip) {
