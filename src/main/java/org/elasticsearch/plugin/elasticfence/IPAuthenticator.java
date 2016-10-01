@@ -1,6 +1,9 @@
 package org.elasticsearch.plugin.elasticfence;
 
 import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.commons.net.util.SubnetUtils;
 
 public class IPAuthenticator {
 
@@ -18,7 +21,18 @@ public class IPAuthenticator {
         public static void setWhitelist(String[] whitelist) {
                 if (whitelist == null) 
                     whitelist = new String[]{};
-                IPAuthenticator.whitelist = whitelist;
+                List<String> tmp = new ArrayList<String>();
+                for (String str: whitelist) {
+                    if (str.contains("/")) {
+                        SubnetUtils utils = new SubnetUtils(str);
+                        for (String ip: utils.getInfo().getAllAddresses()) {
+                            tmp.add(ip);
+                        }
+                    } else {
+                        tmp.add(str);
+                    }
+                }
+                IPAuthenticator.whitelist = tmp.toArray(new String[0]);
         }
 
         public boolean isWhitelisted(String ip) {
@@ -29,7 +43,18 @@ public class IPAuthenticator {
         public static void setBlacklist(String[] blacklist) {
                 if (blacklist == null) 
                     blacklist = new String[]{};
-                IPAuthenticator.blacklist = blacklist;
+                List<String> tmp = new ArrayList<String>();
+                for (String str: blacklist) {
+                    if (str.contains("/")) {
+                        SubnetUtils utils = new SubnetUtils(str);
+                        for (String ip: utils.getInfo().getAllAddresses()) {
+                            tmp.add(ip);
+                        }   
+                    } else {
+                        tmp.add(str);
+                    }   
+                }   
+                IPAuthenticator.blacklist = tmp.toArray(new String[0]);
         }
 
         public boolean isBlacklisted(String ip) {
