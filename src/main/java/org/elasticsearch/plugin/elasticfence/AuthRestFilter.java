@@ -4,7 +4,7 @@ import static org.elasticsearch.rest.RestStatus.SERVICE_UNAVAILABLE;
 
 import java.net.InetSocketAddress;
 
-import org.elasticsearch.client.Client;
+import org.elasticsearch.client.node.NodeClient;
 import org.elasticsearch.common.settings.Settings;
 
 
@@ -21,14 +21,12 @@ import org.elasticsearch.rest.RestRequest;
 import org.elasticsearch.rest.RestStatus;
 
 public class AuthRestFilter extends RestFilter {
-	Client client;
 	Settings settings;
-	public AuthRestFilter(Client client, Settings settings) {
+	public AuthRestFilter(Settings settings) {
 		this.settings = settings;
-		this.client   = client;
 	}
 	@Override
-	public void process(RestRequest request, RestChannel channel, RestFilterChain filterChain) throws Exception {
+	public void process(RestRequest request, RestChannel channel, NodeClient client, RestFilterChain filterChain) throws Exception {
 		try {
 			// IP Check
 			String ipaddr = ((InetSocketAddress) request.getRemoteAddress()).getAddress().getHostAddress();
@@ -37,12 +35,12 @@ public class AuthRestFilter extends RestFilter {
 			IPAuthenticator ipAuthenticator = new IPAuthenticator();
 			if ( ipAuthenticator.isWhitelisted(ipaddr) ) {
              	// Loggers.getLogger(getClass()).error("Request from IP is whitelisted: " + ipaddr);
-				filterChain.continueProcessing(request, channel);
+				filterChain.continueProcessing(request, channel, client);
 				return;
 			} else if ( ipAuthenticator.isBlacklisted(ipaddr) ) {
 				EFLogger.error("Request from IP is blacklisted: " + ipaddr);
 				BytesRestResponse resp = new BytesRestResponse(RestStatus.FORBIDDEN, "Forbidden IP");
-			        	channel.sendResponse(resp);
+				channel.sendResponse(resp);
 				return;
 			}
 
@@ -53,8 +51,8 @@ public class AuthRestFilter extends RestFilter {
 			if (username == null || password == null) {
 				BytesRestResponse resp = new BytesRestResponse(RestStatus.UNAUTHORIZED, "Needs Basic Auth");
 				resp.addHeader("WWW-Authenticate", "Basic realm=\"Http User Auth Plugin\"");
-		        	channel.sendResponse(resp);
-		        	EFLogger.info( ipaddr + " auth failed: " + request.path());
+				channel.sendResponse(resp);
+				EFLogger.info( ipaddr + " auth failed: " + request.path());
 				return ;
 			}
 			
@@ -74,7 +72,7 @@ public class AuthRestFilter extends RestFilter {
 				isAccessible = userAuth.isAccessibleIndices(parser);
 				if (isAccessible) {
 					try {
-						filterChain.continueProcessing(request, channel);
+						filterChain.continueProcessing(request, channel, client);
 					} catch (IndexNotFoundException infe) {
 						EFLogger.info("index not found: " + request.path());
 					} catch (Exception ex) {
