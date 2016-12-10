@@ -42,13 +42,13 @@
     </developers>
     
     <properties>
-        <elasticsearch.version>2.4.0</elasticsearch.version>
+        <elasticsearch.version>5.0.0</elasticsearch.version>
         <elasticsearch.plugin.name>elasticfence</elasticsearch.plugin.name>
         <elasticsearch.plugin.site>true</elasticsearch.plugin.site>
         <elasticsearch.plugin.jvm>true</elasticsearch.plugin.jvm>
         <elasticsearch.plugin.classname>org.elasticsearch.plugin.elasticfence.ElasticfencePlugin</elasticsearch.plugin.classname>
-	<maven.compiler.source>1.7</maven.compiler.source>
-    	<maven.compiler.target>1.7</maven.compiler.target>
+	    <maven.compiler.source>1.8</maven.compiler.source>
+    	<maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <dependencies>
