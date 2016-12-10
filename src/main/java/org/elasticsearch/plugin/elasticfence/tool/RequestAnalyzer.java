@@ -2,11 +2,10 @@ package org.elasticsearch.plugin.elasticfence.tool;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 import java.util.Map.Entry;
 
 import org.elasticsearch.rest.RestRequest;
-
-import org.elasticsearch.common.Base64;
 
 public class RequestAnalyzer {
 	private String username;
@@ -30,12 +29,12 @@ public class RequestAnalyzer {
 
 				    String userPass = "";
 					try {
-						userPass = new String(Base64.decode(authArr[i]), "UTF-8");
-					} catch (UnsupportedEncodingException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
+						//TODO verify this works as expected
+						userPass  = new String(Base64.getUrlDecoder().decode(authArr[i]));
+					} catch (IllegalArgumentException e) {
 						e.printStackTrace();
 					}
+
 				    String[] userPassArr = userPass.split(":", 2);
 				    if (userPassArr.length != 2) {
 				    	continue;
