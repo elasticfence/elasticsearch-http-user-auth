@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import org.elasticsearch.ElasticsearchException;
+import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
@@ -25,6 +26,7 @@ import org.elasticsearch.plugin.elasticfence.logger.EFLogger;
 import org.elasticsearch.search.SearchHit;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.*;
+import static org.elasticsearch.action.support.WriteRequest.RefreshPolicy.IMMEDIATE;
 /**
  * A bridge class of UserData and Elasticsearch index data. 
  * @author tk
@@ -88,9 +90,8 @@ public class UserDataBridge {
 	
 	/**
 	 * add permission to an user with specified indices
-	 * @param user
-	 * @param password
-	 * @param path
+	 * @param userName
+	 * @param indexName
 	 * @return
 	 */
 	public boolean addAuthIndex (String userName, String indexName) {
@@ -128,9 +129,8 @@ public class UserDataBridge {
 	
 	/**
 	 * update permission of an user with specified indices
-	 * @param user
-	 * @param password
-	 * @param path
+	 * @param userName
+	 * @param indexName
 	 * @return
 	 */
 	public boolean updateAuthIndex (String userName, String indexName) {
@@ -168,9 +168,9 @@ public class UserDataBridge {
 	
 	/**
 	 * add permission to an user with a specified index
-	 * @param user
+	 * @param userName
 	 * @param password
-	 * @param path
+	 * @param indexName
 	 * @return
 	 */
 	public boolean removeAuth (String userName, String password, String indexName) {
@@ -231,7 +231,7 @@ public class UserDataBridge {
 			                        .field("created", created)
 			                    .endObject()
 			                  )
-			        .setRefresh(true)
+			        .setRefreshPolicy(IMMEDIATE)
 			        .execute()
 			        .get();
 			reloadUserDataCache();
@@ -267,13 +267,13 @@ public class UserDataBridge {
 		DeleteResponse response = null;
 		try {
 			response = client.prepareDelete(HTTP_USER_AUTH_INDEX, HTTP_USER_AUTH_TYPE, userName)
-					.setRefresh(true)
+					.setRefreshPolicy(IMMEDIATE)
 			        .execute()
 			        .get();
 		} catch (InterruptedException | ExecutionException e) {
 			EFLogger.error("InterruptedException | ExecutionException", e);
 		}
-		if (response != null && response.isFound()) {
+		if (response != null && response.getResult().equals(DocWriteResponse.Result.DELETED)) {
 			reloadUserDataCache();
 			return true;
 		}
