@@ -28,7 +28,6 @@ public class ElasticfencePlugin extends Plugin implements ActionPlugin {
 			return Arrays.asList();
 		} else {
 			String rootPassword = getSettingString("root.password");
-			rootPassword = "rootPassword";
 			if (rootPassword != null && !"".equals(rootPassword)) {
 				UserAuthenticator.setRootPassword(rootPassword);
 				UserAuthenticator.loadRootUserDataCacheOnStart();
