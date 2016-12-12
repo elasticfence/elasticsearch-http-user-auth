@@ -116,7 +116,7 @@ http://your.elasticsearch.hostname:9200/_httpuserauth?mode=adduser&username=admi
 
 ##### Add Index Permissions:
 <pre>
-http://your.elasticsearch.hostname:9200/_httpuserauth?mode=addindex&username=admin&password=somepass&index=index*
+http://your.elasticsearch.hostname:9200/_httpuserauth?mode=addindex&username=admin&index=index*
 </pre>
 
 ##### Update Index Permissions:

