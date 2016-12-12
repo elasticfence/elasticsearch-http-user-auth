@@ -10,13 +10,13 @@ This plugin provides user authentication APIs and a User management web console.
 
 ## Installation 
 <pre>
-bin/plugin install https://raw.githubusercontent.com/elasticfence/elasticsearch-http-user-auth/2.4/jar/elasticfence-2.4.0-SNAPSHOT.zip
+bin/plugin install https://raw.githubusercontent.com/elasticfence/elasticsearch-http-user-auth/2.4.1/jar/elasticfence-2.4.1-SNAPSHOT.zip
 </pre>
 
 #### Build with Maven
 <pre>
 mvn package clean
-bin/plugin install file:///path/to/repo/jar/elasticfence-2.4.0-SNAPSHOT.zip
+bin/plugin install file:///path/to/repo/jar/elasticfence-2.4.1-SNAPSHOT.zip
 </pre>
 
 ## Configuration
@@ -39,6 +39,27 @@ IPs contained in whitelist/blacklist arrays will bypass authentication
 elasticfence.whitelist: ["127.0.0.1", "10.0.0.1"]
 elasticfence.blacklist: ["127.0.0.2", "10.0.0.99"]
 </pre>
+
+### Kibana 4
+Add index filter "/.kibana" to a <b>your_custom_username</b> which you created on Elasticfence and set it in kibana.yml:
+<pre>
+elasticsearch.username: <b>your_custom_username</b>
+elasticsearch.password: <b>your_custom_password</b>
+</pre>
+
+Add permissions to your <b>kibana</b> users using regex filters: 
+<pre>
+/index.*,/_.*,/.kibana,/
+</pre>
+
+#### Kibana 4.x Auth Plugin
+To facilitate users and improve security, the optional Kibana Auth plugin can be deployed alongside Elastifence:
+```
+bin/kibana plugin --install kibana-auth-plugin -u https://github.com/elasticfence/kibana-auth-elasticfence/releases/download/snapshot/kauth-latest.tar.gz
+```
+<img src="https://cloud.githubusercontent.com/assets/1423657/18619991/c47b632e-7e09-11e6-9eff-7b8324ad04c6.png" width="300"/>
+
+---------------
 
 ## Add username and password on HTTP requests
 The authentication method of this plugin is Basic Authentication. Therefore, you should add your username and password on URL string. For example: 
@@ -76,19 +97,6 @@ elasticsearch.yml:
 <pre>
 marvel.agent.exporter.es.hosts: ["root:rootpassword@127.0.0.1:9200"]
 </pre>
-
-#### Kibana 4
-Add index filter "/.kibana" to a <b>your_custom_username</b> which you created on Elasticfence and set it in kibana.yml:
-<pre>
-elasticsearch.username: <b>your_custom_username</b>
-elasticsearch.password: <b>your_custom_password</b>
-</pre>
-
-Add permissions to your <b>kibana</b> users using regex filters: 
-<pre>
-/index.*,/_.*,/.kibana,/
-</pre>
-
 
 ## User Management Console
 
