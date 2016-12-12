@@ -168,8 +168,6 @@ public class UserAuthenticator {
 	/**
 	 * authenticate a combination of user, password and path
 	 * @param path
-	 * @param user
-	 * @param password
 	 * @return
 	 */
 	public boolean execAuth(String path) {
