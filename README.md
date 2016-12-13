@@ -28,10 +28,9 @@ elasticfence.root.password: rootpassword
 
 To disable the plugin set `elasticfence.disabled` to `true`  
 
-To set the root password on each start use `http.user.auth.root.password`   
-**Only the root user can access ES's root APIs (like /_cat, /_cluster) and all indices.**
+To set the root password on each start use `elasticfence.root.password`
 
-Other users can access URLs under their own indices that are specified with this plugin's API.  
+**Only the root user can access ES's root APIs (like /_cat, /_cluster) and all indices.**  Other users can access URLs under their own indices that are specified with this plugin's API.
 
 ### Basic IP ACL
 IPs contained in whitelist/blacklist arrays will bypass authentication
