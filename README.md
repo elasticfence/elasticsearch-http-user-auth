@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/elasticfence/elasticsearch-http-user-auth.svg?branch=master)](https://travis-ci.org/elasticfence/elasticsearch-http-user-auth)
+[![Build Status](https://travis-ci.org/elasticfence/elasticsearch-http-user-auth.svg?branch=5.1.1)](https://travis-ci.org/elasticfence/elasticsearch-http-user-auth)
 
 ![](http://i.imgur.com/OFFgrm8.png?1)
 
