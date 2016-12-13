@@ -28,10 +28,9 @@ elasticfence.root.password: rootpassword
 
 To disable the plugin set `elasticfence.disabled` to `true`  
 
-To set the root password on each start use `http.user.auth.root.password`   
-**Only the root user can access ES's root APIs (like /_cat, /_cluster) and all indices.**
+To set the root password on each start use `elasticfence.root.password`
 
-Other users can access URLs under their own indices that are specified with this plugin's API.  
+**Only the root user can access ES's root APIs (like /_cat, /_cluster) and all indices.**  Other users can access URLs under their own indices that are specified with this plugin's API.
 
 ### Basic IP ACL
 IPs contained in whitelist/blacklist arrays will bypass authentication
@@ -100,14 +99,8 @@ marvel.agent.exporter.es.hosts: ["root:rootpassword@127.0.0.1:9200"]
 
 ## User Management Console
 
-This plugin provides a web console which manages users. 
-<pre>
-http://your.elasticsearch.hostname:9200/_plugin/elasticfence/index.html
-</pre>
-
 ## User Management API
 This plugin provides a web API to manage users and permissions.
-![](http://i.imgur.com/r26mGAl.png)
 
 ##### Add User:
 <pre>
