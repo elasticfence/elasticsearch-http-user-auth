@@ -10,13 +10,13 @@ This plugin provides user authentication APIs and a User management web console.
 
 ## Installation 
 <pre>
-bin/plugin install https://raw.githubusercontent.com/elasticfence/elasticsearch-http-user-auth/2.4.1/jar/elasticfence-2.4.1-SNAPSHOT.zip
+bin/plugin install https://raw.githubusercontent.com/elasticfence/elasticsearch-http-user-auth/5.0.0/jar/elasticfence-5.0.0-SNAPSHOT.zip
 </pre>
 
 #### Build with Maven
 <pre>
 mvn package clean
-bin/plugin install file:///path/to/repo/jar/elasticfence-2.4.1-SNAPSHOT.zip
+bin/plugin install file:///path/to/repo/jar/elasticfence-5.0.0-SNAPSHOT.zip
 </pre>
 
 ## Configuration
@@ -116,7 +116,7 @@ http://your.elasticsearch.hostname:9200/_httpuserauth?mode=adduser&username=admi
 
 ##### Add Index Permissions:
 <pre>
-http://your.elasticsearch.hostname:9200/_httpuserauth?mode=addindex&username=admin&password=somepass&index=index*
+http://your.elasticsearch.hostname:9200/_httpuserauth?mode=addindex&username=admin&index=index*
 </pre>
 
 ##### Update Index Permissions:
