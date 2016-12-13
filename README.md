@@ -100,14 +100,8 @@ marvel.agent.exporter.es.hosts: ["root:rootpassword@127.0.0.1:9200"]
 
 ## User Management Console
 
-This plugin provides a web console which manages users. 
-<pre>
-http://your.elasticsearch.hostname:9200/_plugin/elasticfence/index.html
-</pre>
-
 ## User Management API
 This plugin provides a web API to manage users and permissions.
-![](http://i.imgur.com/r26mGAl.png)
 
 ##### Add User:
 <pre>
