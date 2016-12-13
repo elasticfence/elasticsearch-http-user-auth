@@ -40,7 +40,7 @@ public class AuthRestFilter extends RestFilter {
 				// Loggers.getLogger(getClass()).error("Request from IP is whitelisted: " + ipaddr);
 				filterChain.continueProcessing(request, channel, client);
 				return;
-			} else if ( ipAuthenticator.isBlacklisted(ipaddr) ) {
+			} else if (ipAuthenticator.allBlacklisted() || ipAuthenticator.isBlacklisted(ipaddr)) {
 				EFLogger.error("Request from IP is blacklisted: " + ipaddr);
 				BytesRestResponse resp = new BytesRestResponse(RestStatus.FORBIDDEN, "Forbidden IP");
 			        	channel.sendResponse(resp);
