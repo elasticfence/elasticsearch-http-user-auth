@@ -8,20 +8,20 @@
         <fileSet>
             <directory>${project.basedir}/src/site/</directory>
             <useDefaultExcludes>true</useDefaultExcludes>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory>elasticsearch</outputDirectory>
         </fileSet>
     </fileSets>
     <includeBaseDirectory>false</includeBaseDirectory>
     <files>
         <file>
             <source>${project.basedir}/src/main/resources/plugin-metadata/plugin-descriptor.properties</source>
-            <outputDirectory></outputDirectory>
+            <outputDirectory>elasticsearch</outputDirectory>
             <filtered>true</filtered>
         </file>
     </files>
     <dependencySets>
         <dependencySet>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory>elasticsearch</outputDirectory>
             <useProjectArtifact>true</useProjectArtifact>
             <useTransitiveFiltering>true</useTransitiveFiltering>
             <excludes>
