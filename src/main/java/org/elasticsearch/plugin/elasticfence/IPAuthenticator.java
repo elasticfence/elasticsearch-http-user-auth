@@ -62,6 +62,14 @@ public class IPAuthenticator {
 		            return false;
                 return Arrays.asList(blacklist).contains(ip);
         }
+
+    public boolean allBlacklisted() {
+        if (blacklist == null) {
+            return false;
+        }
+
+        return Arrays.asList(blacklist).contains("*");
+    }
 }
 
 

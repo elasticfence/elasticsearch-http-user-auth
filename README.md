@@ -33,10 +33,15 @@ To set the root password on each start use `elasticfence.root.password`
 **Only the root user can access ES's root APIs (like /_cat, /_cluster) and all indices.**  Other users can access URLs under their own indices that are specified with this plugin's API.
 
 ### Basic IP ACL
-IPs contained in whitelist/blacklist arrays will bypass authentication
+IPs contained in whitelist array will bypass authentication, blacklisted IPs will be blocked.  All other IPs will show an authentication window.
 <pre>
 elasticfence.whitelist: ["127.0.0.1", "10.0.0.1"]
 elasticfence.blacklist: ["127.0.0.2", "10.0.0.99"]
+</pre>
+
+To block all IPs that are not in the whitelist, use the following option for `elasticfence.blacklist`
+<pre>
+elasticfence.blacklist: ["*"]
 </pre>
 
 ### Kibana 4
