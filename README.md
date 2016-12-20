@@ -20,17 +20,30 @@ bin/plugin install file:///path/to/repo/jar/elasticfence-5.1.1-SNAPSHOT.zip
 </pre>
 
 ## Configuration
-Add following lines to elasticsearch.yml:
+
+### Enabling/Disabling Elasticfence
 <pre>
 elasticfence.disabled: false
-elasticfence.root.password: rootpassword
 </pre>
 
-To disable the plugin set `elasticfence.disabled` to `true`  
+To disable the plugin set `elasticfence.disabled` to `true`
+
+### Root Access
+<pre>
+elasticfence.root.password: rootpassword
+</pre>
 
 To set the root password on each start use `elasticfence.root.password`
 
 **Only the root user can access ES's root APIs (like /_cat, /_cluster) and all indices.**  Other users can access URLs under their own indices that are specified with this plugin's API.
+
+### Sharding Scheme
+<pre>
+elasticfence.number_of_shards: 1
+elasticfence.number_of_replicas: 3
+</pre>
+
+Omit these config options to use the Elasticsearch defaults (currently 5 and 1 respectively), otherwise set them according to desired level of redundancy and cluster scheme.
 
 ### Basic IP ACL
 IPs contained in whitelist array will bypass authentication, blacklisted IPs will be blocked.  All other IPs will show an authentication window.

@@ -32,7 +32,7 @@ public class AuthRestHandler extends BaseRestHandler {
 			return channel -> channel.sendResponse(new BytesRestResponse(OK, "No Method"));
 		}
 
-        UserDataBridge userDataBridge = new UserDataBridge(client);
+        UserDataBridge userDataBridge = new UserDataBridge(client, ElasticfenceSettings.SETTING_AUTH_NUMBER_OF_SHARDS, ElasticfenceSettings.SETTING_AUTH_NUMBER_OF_REPLICAS);
 		if (!userDataBridge.isInitialized()) {
 			return channel -> channel.sendResponse(new BytesRestResponse(SERVICE_UNAVAILABLE, "http user auth initializing..."));
 		}

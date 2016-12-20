@@ -20,6 +20,7 @@ import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.plugin.elasticfence.UserAuthenticator;
 import org.elasticsearch.plugin.elasticfence.logger.EFLogger;
@@ -36,10 +37,11 @@ public class UserDataBridge {
 	private static final String HTTP_USER_AUTH_TYPE = "user";
 	private static boolean isInitialized = false;
 	private Client client;
-	
-	public UserDataBridge(Client client) {
+
+    //pass shard numbers here to preserve access level of settings
+	public UserDataBridge(Client client, int number_of_shards, int number_of_replicas) {
 		this.client = client;
-		if (!isInitialized && !createIndexIfEmpty()) {
+		if (!isInitialized && !createIndexIfEmpty(number_of_shards, number_of_replicas)) {
 			EFLogger.error("failed to create index: " + HTTP_USER_AUTH_INDEX);
 		}
 	}
@@ -281,13 +283,17 @@ public class UserDataBridge {
 		return false;
 	}
 	
-	private boolean createIndexIfEmpty() {
+	private boolean createIndexIfEmpty(int number_of_shards, int number_of_replicas) {
 		IndicesExistsResponse res = client.admin().indices().prepareExists(HTTP_USER_AUTH_INDEX).execute().actionGet();
 		if (res.isExists()) {
 			return true;
 		}
-		
-		CreateIndexRequest request = new CreateIndexRequest(HTTP_USER_AUTH_INDEX);
+
+        Settings indexSettings = Settings.builder()
+                .put("number_of_shards", number_of_shards)
+                .put("number_of_replicas", number_of_replicas).build();
+
+		CreateIndexRequest request = new CreateIndexRequest(HTTP_USER_AUTH_INDEX, indexSettings);
 		CreateIndexResponse resp = client.admin().indices().create(request).actionGet();
 		if (resp.isAcknowledged()) {
 			try {
