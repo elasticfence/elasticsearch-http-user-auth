@@ -3,6 +3,7 @@ All Elasticfence version numbers correspond to Elasticsearch version numbers (e.
 # 5.1.1
 
 - Add option to specify a wildcard blacklist option to block all IPs that are not in the whitelist.
+- Add options to specify how many primary/replica shards the `.http_user_auth` index should have.  If no options specified, it will use the ES defaults.
 
 # 5.0.0
 

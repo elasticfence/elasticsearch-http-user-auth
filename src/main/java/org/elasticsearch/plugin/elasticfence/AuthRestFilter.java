@@ -60,7 +60,7 @@ public class AuthRestFilter extends RestFilter {
 			}
 			
 			if (!username.equals("root")) {
-		        UserDataBridge userDataBridge = new UserDataBridge(client);
+		        UserDataBridge userDataBridge = new UserDataBridge(client, ElasticfenceSettings.SETTING_AUTH_NUMBER_OF_SHARDS, ElasticfenceSettings.SETTING_AUTH_NUMBER_OF_REPLICAS);
 		        if (!userDataBridge.isInitialized()) {
 			        channel.sendResponse(new BytesRestResponse(SERVICE_UNAVAILABLE, "http user auth initializing..."));
 			        return ;
