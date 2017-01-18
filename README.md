@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/elasticfence/elasticsearch-http-user-auth.svg?branch=5.0.0)](https://travis-ci.org/elasticfence/elasticsearch-http-user-auth)
+[![Build Status](https://travis-ci.org/elasticfence/elasticsearch-http-user-auth.svg?branch=5.1.1)](https://travis-ci.org/elasticfence/elasticsearch-http-user-auth)
 
 ![](http://i.imgur.com/OFFgrm8.png?1)
 
@@ -10,33 +10,51 @@ This plugin provides user authentication APIs and a User management web console.
 
 ## Installation 
 <pre>
-bin/plugin install https://raw.githubusercontent.com/elasticfence/elasticsearch-http-user-auth/5.0.0/jar/elasticfence-5.0.0-SNAPSHOT.zip
+bin/plugin install https://raw.githubusercontent.com/elasticfence/elasticsearch-http-user-auth/5.1.1/jar/elasticfence-5.1.1-SNAPSHOT.zip
 </pre>
 
 #### Build with Maven
 <pre>
 mvn package clean
-bin/plugin install file:///path/to/repo/jar/elasticfence-5.0.0-SNAPSHOT.zip
+bin/plugin install file:///path/to/repo/jar/elasticfence-5.1.1-SNAPSHOT.zip
 </pre>
 
 ## Configuration
-Add following lines to elasticsearch.yml:
+
+### Enabling/Disabling Elasticfence
 <pre>
 elasticfence.disabled: false
-elasticfence.root.password: rootpassword
 </pre>
 
-To disable the plugin set `elasticfence.disabled` to `true`  
+To disable the plugin set `elasticfence.disabled` to `true`
+
+### Root Access
+<pre>
+elasticfence.root.password: rootpassword
+</pre>
 
 To set the root password on each start use `elasticfence.root.password`
 
 **Only the root user can access ES's root APIs (like /_cat, /_cluster) and all indices.**  Other users can access URLs under their own indices that are specified with this plugin's API.
 
+### Sharding Scheme
+<pre>
+elasticfence.number_of_shards: 1
+elasticfence.number_of_replicas: 3
+</pre>
+
+Omit these config options to use the Elasticsearch defaults (currently 5 and 1 respectively), otherwise set them according to desired level of redundancy and cluster scheme.
+
 ### Basic IP ACL
-IPs contained in whitelist/blacklist arrays will bypass authentication
+IPs contained in whitelist array will bypass authentication, blacklisted IPs will be blocked.  All other IPs will show an authentication window.
 <pre>
 elasticfence.whitelist: ["127.0.0.1", "10.0.0.1"]
 elasticfence.blacklist: ["127.0.0.2", "10.0.0.99"]
+</pre>
+
+To block all IPs that are not in the whitelist, use the following option for `elasticfence.blacklist`
+<pre>
+elasticfence.blacklist: ["*"]
 </pre>
 
 ### Kibana 4

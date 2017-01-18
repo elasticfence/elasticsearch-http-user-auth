@@ -8,25 +8,17 @@ import java.util.List;
 import org.elasticsearch.common.settings.Setting;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.plugin.elasticfence.logger.EFLogger;
+
 import org.elasticsearch.plugins.ActionPlugin;
-import org.elasticsearch.rest.RestHandler;
-
 import org.elasticsearch.plugins.Plugin;
-
-import static java.util.Collections.singletonList;
+import org.elasticsearch.rest.RestHandler;
 
 public class ElasticfencePlugin extends Plugin implements ActionPlugin {
 	private final Settings settings;
-    private final String SETTINGS_PREFIX = "elasticfence.";
 
 	public ElasticfencePlugin(Settings settings){
 		this.settings = settings;
 		EFLogger.info("loading elasticfence plugin...");
-	}
-
-	@Override
-	public Settings additionalSettings() {
-		return Settings.EMPTY;
 	}
 
 	@Override
@@ -55,8 +47,14 @@ public class ElasticfencePlugin extends Plugin implements ActionPlugin {
                     EFLogger.warn("elasticfence plugin IP blacklist enabled " + Arrays.toString(blacklist));
                 }
 
+                ElasticfenceSettings.SETTING_AUTH_NUMBER_OF_SHARDS = getSettingInt("number_of_shards", ElasticfenceSettings.SETTING_AUTH_NUMBER_OF_SHARDS_DEFAULT);
+                ElasticfenceSettings.SETTING_AUTH_NUMBER_OF_REPLICAS = getSettingInt("number_of_replicas", ElasticfenceSettings.SETTING_AUTH_NUMBER_OF_REPLICAS_DEFAULT);
+
+                EFLogger.info("auth index number of shards set to " + ElasticfenceSettings.SETTING_AUTH_NUMBER_OF_SHARDS);
+                EFLogger.info("auth index number of replicas set to " + ElasticfenceSettings.SETTING_AUTH_NUMBER_OF_REPLICAS);
+
                 EFLogger.info("elasticfence plugin is enabled");
-                return singletonList(AuthRestHandler.class);
+                return Collections.singletonList(AuthRestHandler.class);
             }
         } catch (Exception e) {
             EFLogger.error("Error occurred during initialization of Elasticfence!", e);
@@ -66,7 +64,7 @@ public class ElasticfencePlugin extends Plugin implements ActionPlugin {
 	}
 
 	private String getSettingString(String key) throws Exception {
-        Settings s = settings.getByPrefix(SETTINGS_PREFIX);
+        Settings s = settings.getByPrefix(ElasticfenceSettings.SETTINGS_PREFIX);
         String value = s.get(key);
 
 		//EFLogger.info(SETTINGS_PREFIX + key + " value: " + value);
@@ -78,8 +76,19 @@ public class ElasticfencePlugin extends Plugin implements ActionPlugin {
 		return value;
 	}
 
+    private int getSettingInt(String key, int defaultValue) throws Exception {
+        Settings s = settings.getByPrefix(ElasticfenceSettings.SETTINGS_PREFIX);
+        int value = s.getAsInt(key, defaultValue);
+
+        if (value == defaultValue) {
+            EFLogger.warn(key + " is set to the default value of " +  defaultValue);
+        }
+
+        return value;
+    }
+
 	private String[] getSettingArray(String key, String[] defaultValue) throws Exception {
-        Settings s = settings.getByPrefix(SETTINGS_PREFIX);
+        Settings s = settings.getByPrefix(ElasticfenceSettings.SETTINGS_PREFIX);
         String[] value = s.getAsArray(key, defaultValue);
 
         if (value == null || value.length == 0) {
@@ -103,15 +112,21 @@ public class ElasticfencePlugin extends Plugin implements ActionPlugin {
         return Setting.listSetting(name, new ArrayList<>(), s -> s.toString(), Setting.Property.NodeScope);
     }
 
+    private Setting<Integer> asInt(String name, int defaultValue) {
+        return Setting.intSetting(name, defaultValue, Setting.Property.NodeScope);
+    }
+
     @Override
     public List<Setting<?>> getSettings() {
         String rootPrefix = "root.";
 
         return Arrays.asList(
-            asBoolean(SETTINGS_PREFIX + "disabled"),
-            asString(SETTINGS_PREFIX + rootPrefix + "password"),
-            asList(SETTINGS_PREFIX + "whitelist"),
-            asList(SETTINGS_PREFIX + "blacklist")
+                asBoolean(ElasticfenceSettings.SETTINGS_PREFIX + "disabled"),
+                asString(ElasticfenceSettings.SETTINGS_PREFIX + rootPrefix + "password"),
+                asList(ElasticfenceSettings.SETTINGS_PREFIX + "whitelist"),
+                asList(ElasticfenceSettings.SETTINGS_PREFIX + "blacklist"),
+                asInt(ElasticfenceSettings.SETTINGS_PREFIX + "number_of_shards", ElasticfenceSettings.SETTING_AUTH_NUMBER_OF_SHARDS_DEFAULT),
+                asInt(ElasticfenceSettings.SETTINGS_PREFIX + "number_of_replicas", ElasticfenceSettings.SETTING_AUTH_NUMBER_OF_REPLICAS_DEFAULT)
         );
     }
 }
