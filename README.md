@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/elasticfence/elasticsearch-http-user-auth.svg?branch=5.0.0)](https://travis-ci.org/elasticfence/elasticsearch-http-user-auth)
+[![Build Status](https://travis-ci.org/elasticfence/elasticsearch-http-user-auth.svg?branch=5.0.1)](https://travis-ci.org/elasticfence/elasticsearch-http-user-auth)
 
 ![](http://i.imgur.com/OFFgrm8.png?1)
 
@@ -10,13 +10,13 @@ This plugin provides user authentication APIs and a User management web console.
 
 ## Installation 
 <pre>
-bin/plugin install https://raw.githubusercontent.com/elasticfence/elasticsearch-http-user-auth/5.0.0/jar/elasticfence-5.0.0-SNAPSHOT.zip
+bin/plugin install https://raw.githubusercontent.com/elasticfence/elasticsearch-http-user-auth/5.0.1/jar/elasticfence-5.0.1-SNAPSHOT.zip
 </pre>
 
 #### Build with Maven
 <pre>
 mvn package clean
-bin/plugin install file:///path/to/repo/jar/elasticfence-5.0.0-SNAPSHOT.zip
+bin/plugin install file:///path/to/repo/jar/elasticfence-5.0.1-SNAPSHOT.zip
 </pre>
 
 ## Configuration
