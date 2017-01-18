@@ -2,12 +2,3 @@ language: java
 install: mvn clean package; ls ./jar;
 jdk:
   - oraclejdk8
-deploy:
-  provider: releases
-  overwrite: true
-  api_key: 
-      secure: '$GITHUB_SECURE'
-  file: './jar/*.zip'
-  skip_cleanup: true
-  on:
-    tags

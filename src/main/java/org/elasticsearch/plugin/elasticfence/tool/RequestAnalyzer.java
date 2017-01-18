@@ -29,12 +29,10 @@ public class RequestAnalyzer {
 
 				    String userPass = "";
 					try {
-						//TODO verify this works as expected
-						userPass  = new String(Base64.getUrlDecoder().decode(authArr[i]));
+						userPass = new String(Base64.getUrlDecoder().decode(authArr[i]));
 					} catch (IllegalArgumentException e) {
 						e.printStackTrace();
 					}
-
 				    String[] userPassArr = userPass.split(":", 2);
 				    if (userPassArr.length != 2) {
 				    	continue;
