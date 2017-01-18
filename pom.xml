@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.elasticsearch.plugin.elasticfence</groupId>
     <artifactId>elasticfence</artifactId>
-    <version>5.1.1-SNAPSHOT</version>
+    <version>5.1.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 <!--     <packaging>pom</packaging> -->
     <description>Elasticsearch http basic auth and IP ACL plugin</description>
@@ -42,7 +42,7 @@
     </developers>
     
     <properties>
-        <elasticsearch.version>5.1.1</elasticsearch.version>
+        <elasticsearch.version>5.1.2</elasticsearch.version>
         <elasticsearch.plugin.name>elasticfence</elasticsearch.plugin.name>
         <elasticsearch.plugin.site>true</elasticsearch.plugin.site>
         <elasticsearch.plugin.jvm>true</elasticsearch.plugin.jvm>
