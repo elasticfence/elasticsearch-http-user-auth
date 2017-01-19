@@ -42,7 +42,7 @@
     </developers>
     
     <properties>
-        <elasticsearch.version>2.3.0</elasticsearch.version>
+        <elasticsearch.version>2.3.1</elasticsearch.version>
         <elasticsearch.plugin.name>elasticfence</elasticsearch.plugin.name>
         <elasticsearch.plugin.site>true</elasticsearch.plugin.site>
         <elasticsearch.plugin.jvm>true</elasticsearch.plugin.jvm>
